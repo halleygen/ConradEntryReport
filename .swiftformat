@@ -1,0 +1,19 @@
+# Format Options
+
+# File Options
+--exclude Pods, rareTests, rareUITests
+
+# Rules
+--enable isEmpty
+--commas inline
+--header "\nConradEntryReport\nCopyright © {year} Jesse Halley. All rights reserved.\n"
+--decimalgrouping 3,3
+--stripunusedargs closure-only
+--self init-only
+--wraparguments before-first
+--wrapcollections before-first
+--closingparen balanced
+--elseposition same-line
+--patternlet hoist
+--ranges spaced
+--semicolons never
