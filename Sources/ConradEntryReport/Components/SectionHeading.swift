@@ -48,9 +48,9 @@ public struct SectionHeading: Heading {
     }
 }
 
-// MARK: - SubSectionHeading
+// MARK: - SubsectionHeading
 
-public struct SubSectionHeading: Heading {
+public struct SubsectionHeading: Heading {
     public static let tagName: String = "h3"
     public var content: HTMLTextConvertible
 

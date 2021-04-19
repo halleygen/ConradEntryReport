@@ -7,8 +7,7 @@
 import XCTest
 
 final class ConradEntryReportTests: XCTestCase {
-    func testExample() {
-    }
+    func testExample() {}
 
     static var allTests = [
         ("testExample", testExample)
