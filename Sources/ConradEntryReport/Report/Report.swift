@@ -15,7 +15,7 @@ public final class Report {
 
     // MARK: - Init
 
-    init(sections: ContiguousArray<Section> = [], timeZone: TimeZone) {
+    public init(sections: ContiguousArray<Section> = [], timeZone: TimeZone) {
         self.sections = sections
         self.timeZone = timeZone
     }
