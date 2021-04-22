@@ -33,7 +33,7 @@ extension TitlePage: HTMLComponent {
         try sectionElement.appendChild(headingElement)
 
         for (title, value) in components {
-            let keyValuePair = Bold { KeyValuePair(key: title, value: value) }
+            let keyValuePair = Strong { KeyValuePair(key: title, value: value) }
             let content = try keyValuePair.htmlNode(context: context)
             try sectionElement.appendChild(content)
             _ = try sectionElement.appendElement(.lineBreak)
