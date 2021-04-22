@@ -5,21 +5,23 @@
 
 public struct TitlePage {
     public var heading: DocumentHeading
+    public var vesselPhoto: Figure
     public var components: ContiguousArray<(String, HTMLTextConvertible)>
 
-    public init(heading: DocumentHeading, components: ContiguousArray<(String, HTMLTextConvertible)>) {
+    public init(heading: DocumentHeading, vesselPhoto: Figure, components: ContiguousArray<(String, HTMLTextConvertible)>) {
         self.heading = heading
         self.components = components
+        self.vesselPhoto = vesselPhoto
     }
 
     @_disfavoredOverload
-    public init(heading: DocumentHeading, components: ContiguousArray<(String, HTMLTextConvertible?)>) {
+    public init(heading: DocumentHeading, vesselPhoto: Figure, components: ContiguousArray<(String, HTMLTextConvertible?)>) {
         let compacted = components.compactMap { title, component -> (String, HTMLTextConvertible)? in
             guard let component = component else { return nil }
             return (title, component)
         }
 
-        self.init(heading: heading, components: ContiguousArray(compacted))
+        self.init(heading: heading, vesselPhoto: vesselPhoto, components: ContiguousArray(compacted))
     }
 }
 
@@ -36,6 +38,9 @@ extension TitlePage: HTMLComponent {
             try sectionElement.appendChild(content)
             _ = try sectionElement.appendElement(.lineBreak)
         }
+
+        let vesselPhotoElement = try vesselPhoto.htmlNode(context: context)
+        try sectionElement.appendChild(vesselPhotoElement)
 
         return sectionElement
     }
