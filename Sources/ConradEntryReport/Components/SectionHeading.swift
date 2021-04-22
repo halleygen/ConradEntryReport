@@ -19,7 +19,7 @@ extension Heading {
         self.init(content: value)
     }
 
-    public func htmlElement(context: Report.Context) throws -> HTMLElement {
+    public func htmlNode(context: Report.Context) throws -> HTMLNode {
         let element = HTMLElement(Tag(Self.tagName), "")
         try element.text(content.htmlString(context: context))
         return element

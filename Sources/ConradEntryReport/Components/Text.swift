@@ -8,40 +8,47 @@ import Foundation
 public struct Text {
     public var value: String
 
-    public init(value: String) {
+    public init(_ value: String) {
         self.value = value
     }
 
     public init(paragraphs: [String]) {
-        self.init(value: paragraphs.joined(separator: "\n"))
+        self.init(paragraphs.joined(separator: "\n"))
     }
 }
 
 extension Text: ExpressibleByStringLiteral {
     public init(stringLiteral value: String) {
-        self.init(value: value)
+        self.init(value)
     }
 }
 
 extension Text: HTMLComponent {
-    public func htmlElement(context: Report.Context) throws -> HTMLElement {
-        let container = HTMLElement(.division, "")
+    public func htmlNode(context: Report.Context) throws -> HTMLNode {
+        var error: Error?
+        let textNode = HTMLTextNode("", "")
 
-        var caughtError: Error?
+        var shouldAppendLineBreak = false
         value.enumerateSubstrings(in: value.startIndex ..< value.endIndex, options: .byParagraphs) { _, paragraphRange, _, shouldStop in
             do {
-                let paragraphElement = try container.appendElement(.paragraph)
-                try paragraphElement.text(String(value[paragraphRange]))
-            } catch {
-                caughtError = error
+                let childNode = HTMLTextNode(String(value[paragraphRange]), "")
+
+                if shouldAppendLineBreak {
+                    try textNode.addChildren(HTMLElement(.lineBreak, ""), childNode)
+                } else {
+                    try textNode.addChildren(childNode)
+                }
+                shouldAppendLineBreak = true
+            } catch let err {
+                error = err
                 shouldStop = true
             }
         }
 
-        if let caughtError = caughtError {
-            throw caughtError
+        if let error = error {
+            throw error
         }
 
-        return container
+        return textNode
     }
 }

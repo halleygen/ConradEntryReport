@@ -6,5 +6,5 @@
 import Foundation
 
 public protocol HTMLComponent {
-    func htmlElement(context: Report.Context) throws -> HTMLElement
+    func htmlNode(context: Report.Context) throws -> HTMLNode
 }

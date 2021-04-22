@@ -20,7 +20,7 @@ public struct Table {
 // MARK: - HTMLComponent
 
 extension Table: HTMLComponent {
-    public func htmlElement(context: Report.Context) throws -> HTMLElement {
+    public func htmlNode(context: Report.Context) throws -> HTMLNode {
         guard !rows.isEmpty else { throw ReportError.emptyTable(self) }
 
         let tableElement = HTMLElement(.table, "")
@@ -36,7 +36,7 @@ extension Table: HTMLComponent {
 
         let tableBody = try tableElement.appendElement(.tableBody)
         for row in rows {
-            let rowElement = try row.htmlElement(context: context)
+            let rowElement = try row.htmlNode(context: context)
             try tableBody.appendChild(rowElement)
         }
 
@@ -71,7 +71,7 @@ public extension Table {
             self.content = content
         }
 
-        public func htmlElement(context: Report.Context) throws -> HTMLElement {
+        public func htmlNode(context: Report.Context) throws -> HTMLNode {
             let rowElement = HTMLElement(.tableRow, "")
 
             let titleElement = try rowElement.appendElement(.tableHeaderCell)

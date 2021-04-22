@@ -37,7 +37,7 @@ public extension List {
 }
 
 extension List: HTMLComponent {
-    public func htmlElement(context: Report.Context) throws -> HTMLElement {
+    public func htmlNode(context: Report.Context) throws -> HTMLNode {
         let listElement = HTMLElement(kind.tag, "")
 
         guard !items.isEmpty else {

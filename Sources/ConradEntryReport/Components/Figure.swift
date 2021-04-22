@@ -24,7 +24,7 @@ public struct Figure {
 // MARK: - HTMLComponent
 
 extension Figure: HTMLComponent {
-    public func htmlElement(context: Report.Context) throws -> HTMLElement {
+    public func htmlNode(context: Report.Context) throws -> HTMLNode {
         let figureElement = HTMLElement(.figure, "")
 
         let imgElement = try figureElement.appendElement(.image)

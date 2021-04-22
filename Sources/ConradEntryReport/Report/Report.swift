@@ -36,7 +36,7 @@ public extension Report {
         }
 
         for section in sections {
-            let sectionElement = try section.htmlElement(context: context)
+            let sectionElement = try section.htmlNode(context: context)
             try body.appendChild(sectionElement)
         }
 

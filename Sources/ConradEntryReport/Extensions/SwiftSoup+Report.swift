@@ -7,6 +7,7 @@ import SwiftSoup
 
 public typealias HTMLDocument = SwiftSoup.Document
 public typealias HTMLElement = SwiftSoup.Element
+public typealias HTMLTextNode = SwiftSoup.TextNode
 public typealias HTMLNode = SwiftSoup.Node
 
 extension HTMLDocument {
@@ -41,4 +42,11 @@ extension Tag {
     static var orderedList: Tag { .init("ol") }
     static var unorderedList: Tag { .init("ul") }
     static var listItem: Tag { .init("li") }
+    static var bold: Tag { .init("b") }
+    static var italicised: Tag { .init("i") }
+    static var strong: Tag { .init("strong") }
+    static var small: Tag { .init("small") }
+    static var `subscript`: Tag { .init("sub") }
+    static var superscript: Tag { .init("sup") }
+    static var lineBreak: Tag { .init("br") }
 }

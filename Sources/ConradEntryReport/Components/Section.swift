@@ -19,15 +19,15 @@ public struct Section {
 }
 
 extension Section: HTMLComponent {
-    public func htmlElement(context: Report.Context) throws -> HTMLElement {
+    public func htmlNode(context: Report.Context) throws -> HTMLNode {
         let sectionElement = HTMLElement(.section, "")
 
-        let headingElement = try heading.htmlElement(context: context)
+        let headingElement = try heading.htmlNode(context: context)
         try sectionElement.appendChild(headingElement)
 
         for component in components {
             let componentWrapper = try sectionElement.appendElement(.division)
-            let componentContent = try component.htmlElement(context: context)
+            let componentContent = try component.htmlNode(context: context)
             try componentWrapper.appendChild(componentContent)
         }
 

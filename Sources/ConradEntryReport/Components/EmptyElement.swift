@@ -4,7 +4,7 @@
 //
 
 public struct EmptyComponent: HTMLComponent {
-    public func htmlElement(context: Report.Context) throws -> HTMLElement {
+    public func htmlNode(context: Report.Context) throws -> HTMLNode {
         let element = HTMLElement(.division, "")
         try element.attr("hidden", true)
         return element
