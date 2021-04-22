@@ -7,19 +7,18 @@ import Foundation
 import SwiftSoup
 
 public protocol RichText: HTMLComponent {
-    associatedtype Content: HTMLComponent
     static var tag: Tag { get }
-    var content: Content { get set }
+    var content: HTMLComponent { get set }
 
-    init(_ content: Content)
+    init(_ content: HTMLComponent)
 }
 
 public extension RichText {
-    init(_ content: () -> Content) {
-        self.init(content())
+    init(_ content: () throws -> HTMLComponent) rethrows {
+        self.init(try content())
     }
 
-    init(_ string: String) where Content == Text {
+    init(_ string: String) {
         self.init(Text(string))
     }
 
@@ -34,38 +33,38 @@ public extension RichText {
 
 // MARK: - Implementations
 
-public struct Bold<Content: HTMLComponent>: RichText {
+public struct Bold: RichText {
     public static var tag: Tag { .bold }
-    public var content: Content
-    public init(_ content: Content) { self.content = content }
+    public var content: HTMLComponent
+    public init(_ content: HTMLComponent) { self.content = content }
 }
 
-public struct Italicised<Content: HTMLComponent>: RichText {
+public struct Italicised: RichText {
     public static var tag: Tag { .italicised }
-    public var content: Content
-    public init(_ content: Content) { self.content = content }
+    public var content: HTMLComponent
+    public init(_ content: HTMLComponent) { self.content = content }
 }
 
-public struct Strong<Content: HTMLComponent>: RichText {
+public struct Strong: RichText {
     public static var tag: Tag { .strong }
-    public var content: Content
-    public init(_ content: Content) { self.content = content }
+    public var content: HTMLComponent
+    public init(_ content: HTMLComponent) { self.content = content }
 }
 
-public struct Small<Content: HTMLComponent>: RichText {
+public struct Small: RichText {
     public static var tag: Tag { .small }
-    public var content: Content
-    public init(_ content: Content) { self.content = content }
+    public var content: HTMLComponent
+    public init(_ content: HTMLComponent) { self.content = content }
 }
 
-public struct Subscript<Content: HTMLComponent>: RichText {
+public struct Subscript: RichText {
     public static var tag: Tag { .subscript }
-    public var content: Content
-    public init(_ content: Content) { self.content = content }
+    public var content: HTMLComponent
+    public init(_ content: HTMLComponent) { self.content = content }
 }
 
-public struct Superscript<Content: HTMLComponent>: RichText {
+public struct Superscript: RichText {
     public static var tag: Tag { .superscript }
-    public var content: Content
-    public init(_ content: Content) { self.content = content }
+    public var content: HTMLComponent
+    public init(_ content: HTMLComponent) { self.content = content }
 }

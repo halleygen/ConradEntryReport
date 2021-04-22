@@ -6,9 +6,9 @@
 import Foundation
 
 public struct Text {
-    public var value: String
+    public var value: HTMLTextConvertible
 
-    public init(_ value: String) {
+    public init(_ value: HTMLTextConvertible) {
         self.value = value
     }
 
@@ -29,9 +29,10 @@ extension Text: HTMLComponent {
         let textNode = HTMLTextNode("", "")
 
         var shouldAppendLineBreak = false
-        value.enumerateSubstrings(in: value.startIndex ..< value.endIndex, options: .byParagraphs) { _, paragraphRange, _, shouldStop in
+        let valueString = value.htmlString(context: context)
+        valueString.enumerateSubstrings(in: valueString.startIndex ..< valueString.endIndex, options: .byParagraphs) { _, paragraphRange, _, shouldStop in
             do {
-                let childNode = HTMLTextNode(String(value[paragraphRange]), "")
+                let childNode = HTMLTextNode(String(valueString[paragraphRange]), "")
 
                 if shouldAppendLineBreak {
                     try textNode.addChildren(HTMLElement(.lineBreak, ""), childNode)
