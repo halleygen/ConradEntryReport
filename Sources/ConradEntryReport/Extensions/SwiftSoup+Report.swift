@@ -9,6 +9,7 @@ public typealias HTMLDocument = SwiftSoup.Document
 public typealias HTMLElement = SwiftSoup.Element
 public typealias HTMLTextNode = SwiftSoup.TextNode
 public typealias HTMLNode = SwiftSoup.Node
+public typealias HTMLTag = SwiftSoup.Tag
 
 extension HTMLDocument {
     static var reportTemplate: HTMLDocument {
@@ -49,4 +50,5 @@ extension Tag {
     static var `subscript`: Tag { .init("sub") }
     static var superscript: Tag { .init("sup") }
     static var lineBreak: Tag { .init("br") }
+    static var h4: Tag { .init("h4") }
 }

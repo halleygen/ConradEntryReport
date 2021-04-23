@@ -7,13 +7,44 @@
 
 public struct Table {
     public var title: HTMLTextConvertible?
-    public var columnTitles: (left: HTMLTextConvertible?, right: HTMLTextConvertible?)
-    public var rows: [Row]
+    public var rows: [[Data]]
+    public var columnHeaderMode: ColumnHeaderMode
+    public var rowHeaderMode: RowHeaderMode
 
-    public init(title: HTMLTextConvertible?, columnTitles: (HTMLTextConvertible?, HTMLTextConvertible?) = (nil, nil), rows: [Table.Row]) {
+    public init(title: HTMLTextConvertible?, columnHeaderMode: ColumnHeaderMode = .firstRowOfTable, rowHeaderMode: RowHeaderMode = .firstColumnOfRow, rows: [[Data]]) {
         self.title = title
-        self.columnTitles = columnTitles
         self.rows = rows
+        self.columnHeaderMode = columnHeaderMode
+        self.rowHeaderMode = rowHeaderMode
+    }
+
+    public enum ColumnHeaderMode {
+        case none, firstRowOfTable
+    }
+
+    public enum RowHeaderMode {
+        case none, firstColumnOfRow
+    }
+
+    public struct Data: HTMLTextConvertible {
+        public var value: HTMLTextConvertible?
+        public var columnSpan: Int
+
+        public init(_ value: HTMLTextConvertible?, columnSpan: Int = 1) {
+            self.value = value
+            self.columnSpan = columnSpan
+        }
+
+        public func htmlString(context: Report.Context) -> String {
+            value?.htmlString(context: context) ?? ""
+        }
+
+        public static let empty: Data = .init(nil)
+    }
+
+    public enum Error: Swift.Error {
+        case emptyTable
+        case inconsistentRowLengths([[Data]])
     }
 }
 
@@ -21,67 +52,100 @@ public struct Table {
 
 extension Table: HTMLComponent {
     public func htmlNode(context: Report.Context) throws -> HTMLNode {
-        guard !rows.isEmpty else { throw ReportError.emptyTable(self) }
+        guard !rows.isEmpty, rows.allSatisfy({ !$0.isEmpty }) else { throw Error.emptyTable }
+        guard tableIsValid() else { throw Error.inconsistentRowLengths(rows) }
 
         let tableElement = HTMLElement(.table, "")
 
         if let title = title {
             let captionElement = try tableElement.appendElement(.caption)
-            try captionElement.text(title.htmlString(context: context))
+            let titleElement = try H4(Text(title)).htmlNode(context: context)
+            try captionElement.appendChild(titleElement)
         }
 
-        if let tableHeader = try tableHeaderElement(lhsTitle: columnTitles.left, rhsTitle: columnTitles.right, context: context) {
-            try tableElement.appendChild(tableHeader)
+        let tableBodyRows: [[Data]]
+        switch columnHeaderMode {
+        case .none:
+            tableBodyRows = rows
+
+        case .firstRowOfTable:
+            let tableHeaderElement = try tableHeaderElement(for: rows[0], context: context)
+            try tableElement.appendChild(tableHeaderElement)
+
+            tableBodyRows = Array(rows.dropFirst())
         }
 
-        let tableBody = try tableElement.appendElement(.tableBody)
-        for row in rows {
-            let rowElement = try row.htmlNode(context: context)
-            try tableBody.appendChild(rowElement)
+        let bodyElement = try tableElement.appendElement(.tableBody)
+
+        for row in tableBodyRows {
+            let rowElement = try bodyElement.appendElement(.tableRow)
+
+            for (columnIndex, data) in row.enumerated() {
+                let dataElement: HTMLElement
+                switch rowHeaderMode {
+                case .none:
+                    dataElement = try rowElement.appendElement(.tableDataCell)
+
+                case .firstColumnOfRow:
+                    if columnIndex == 0 {
+                        dataElement = try rowElement.appendElement(.tableHeaderCell)
+                        try dataElement.attr("scope", "row")
+                    } else {
+                        dataElement = try rowElement.appendElement(.tableDataCell)
+                    }
+                }
+
+                try dataElement.text(data.htmlString(context: context))
+                if data.columnSpan > 1 {
+                    try dataElement.attr("colspan", String(data.columnSpan))
+                }
+            }
         }
 
         return tableElement
     }
 
-    private func tableHeaderElement(lhsTitle: HTMLTextConvertible?, rhsTitle: HTMLTextConvertible?, context: Report.Context) throws -> HTMLElement? {
-        guard lhsTitle != nil, rhsTitle != nil else { return nil }
-
+    private func tableHeaderElement(for row: [Data], context: Report.Context) throws -> HTMLElement {
         let tableHeader = HTMLElement(.tableHeader, "")
         let headerRow = try tableHeader.appendElement(.tableRow)
 
-        let leftHand = try headerRow.appendElement(.tableHeaderCell)
-        try leftHand.text(lhsTitle?.htmlString(context: context) ?? "")
+        for data in row {
+            let cellElement = try headerRow.appendElement(.tableHeaderCell)
+            try cellElement.text(data.htmlString(context: context))
 
-        let rightHand = try headerRow.appendElement(.tableHeaderCell)
-        try rightHand.text(rhsTitle?.htmlString(context: context) ?? "")
+            if data.columnSpan > 1 {
+                try cellElement.attr("colspan", String(data.columnSpan))
+            }
+        }
 
         return tableHeader
     }
+
+    private func tableIsValid() -> Bool {
+        zip(rows, rows.dropFirst())
+            .allSatisfy { first, second -> Bool in
+                // Check that all rows are the same length by examing the column span of each piece of data
+                first.reduce(0) { $0 + max(1, $1.columnSpan) } == second.reduce(0) { $0 + max(1, $1.columnSpan) }
+            }
+    }
 }
 
-// MARK: - Row
+// MARK: - Helpers
 
 public extension Table {
-    struct Row: HTMLComponent {
-        public var title: HTMLTextConvertible
-        public var content: HTMLTextConvertible
+    static func twoColumns(title: HTMLTextConvertible?, columnHeaderMode: ColumnHeaderMode = .firstRowOfTable, rowHeaderMode: RowHeaderMode = .firstColumnOfRow, rows: [(Data, Data)]) -> Table {
+        Self(title: title, columnHeaderMode: columnHeaderMode, rowHeaderMode: rowHeaderMode, rows: rows.map { [$0.0, $0.1] })
+    }
 
-        public init(title: HTMLTextConvertible, content: HTMLTextConvertible) {
-            self.title = title
-            self.content = content
-        }
+    static func threeColumns(title: HTMLTextConvertible?, columnHeaderMode: ColumnHeaderMode = .firstRowOfTable, rowHeaderMode: RowHeaderMode = .firstColumnOfRow, rows: [(Data, Data, Data)]) -> Table {
+        Self(title: title, columnHeaderMode: columnHeaderMode, rowHeaderMode: rowHeaderMode, rows: rows.map { [$0.0, $0.1, $0.2] })
+    }
 
-        public func htmlNode(context: Report.Context) throws -> HTMLNode {
-            let rowElement = HTMLElement(.tableRow, "")
+    static func fourColumns(title: HTMLTextConvertible?, columnHeaderMode: ColumnHeaderMode = .firstRowOfTable, rowHeaderMode: RowHeaderMode = .firstColumnOfRow, rows: [(Data, Data, Data, Data)]) -> Table {
+        Self(title: title, columnHeaderMode: columnHeaderMode, rowHeaderMode: rowHeaderMode, rows: rows.map { [$0.0, $0.1, $0.2, $0.3] })
+    }
 
-            let titleElement = try rowElement.appendElement(.tableHeaderCell)
-            try titleElement.attr("scope", "row")
-            try titleElement.text(title.htmlString(context: context))
-
-            let contentElement = try rowElement.appendElement(.tableDataCell)
-            try contentElement.text(content.htmlString(context: context))
-
-            return rowElement
-        }
+    static func fiveColumns(title: HTMLTextConvertible?, columnHeaderMode: ColumnHeaderMode = .firstRowOfTable, rowHeaderMode: RowHeaderMode = .firstColumnOfRow, rows: [(Data, Data, Data, Data, Data)]) -> Table {
+        Self(title: title, columnHeaderMode: columnHeaderMode, rowHeaderMode: rowHeaderMode, rows: rows.map { [$0.0, $0.1, $0.2, $0.3, $0.4] })
     }
 }

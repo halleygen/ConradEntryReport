@@ -68,3 +68,9 @@ public struct Superscript: RichText {
     public var content: HTMLComponent
     public init(_ content: HTMLComponent) { self.content = content }
 }
+
+public struct H4: RichText {
+    public static var tag: Tag { .h4 }
+    public var content: HTMLComponent
+    public init(_ content: HTMLComponent) { self.content = content }
+}
