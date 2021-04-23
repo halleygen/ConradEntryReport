@@ -18,6 +18,14 @@ public struct Table {
         self.rowHeaderMode = rowHeaderMode
     }
 
+    @_disfavoredOverload
+    public init(title: HTMLTextConvertible?, columnHeaderMode: ColumnHeaderMode = .firstRowOfTable, rowHeaderMode: RowHeaderMode = .firstColumnOfRow, rows: [[HTMLTextConvertible?]]) {
+        let mapped = rows.map { row -> [Data] in
+            row.map { Data($0) }
+        }
+        self.init(title: title, columnHeaderMode: columnHeaderMode, rowHeaderMode: rowHeaderMode, rows: mapped)
+    }
+
     public enum ColumnHeaderMode {
         case none, firstRowOfTable
     }
@@ -26,7 +34,7 @@ public struct Table {
         case none, firstColumnOfRow
     }
 
-    public struct Data: HTMLTextConvertible {
+    public struct Data {
         public var value: HTMLTextConvertible?
         public var columnSpan: Int
 
@@ -35,7 +43,7 @@ public struct Table {
             self.columnSpan = columnSpan
         }
 
-        public func htmlString(context: Report.Context) -> String {
+        func htmlString(context: Report.Context) -> String {
             value?.htmlString(context: context) ?? ""
         }
 
@@ -133,19 +141,23 @@ extension Table: HTMLComponent {
 // MARK: - Helpers
 
 public extension Table {
-    static func twoColumns(title: HTMLTextConvertible?, columnHeaderMode: ColumnHeaderMode = .firstRowOfTable, rowHeaderMode: RowHeaderMode = .firstColumnOfRow, rows: [(Data, Data)]) -> Table {
+    static func twoColumns(title: HTMLTextConvertible?, columnHeaderMode: ColumnHeaderMode = .firstRowOfTable, rowHeaderMode: RowHeaderMode = .firstColumnOfRow, rows: [(HTMLTextConvertible?, HTMLTextConvertible?)]) -> Table {
         Self(title: title, columnHeaderMode: columnHeaderMode, rowHeaderMode: rowHeaderMode, rows: rows.map { [$0.0, $0.1] })
     }
 
-    static func threeColumns(title: HTMLTextConvertible?, columnHeaderMode: ColumnHeaderMode = .firstRowOfTable, rowHeaderMode: RowHeaderMode = .firstColumnOfRow, rows: [(Data, Data, Data)]) -> Table {
+    static func threeColumns(title: HTMLTextConvertible?, columnHeaderMode: ColumnHeaderMode = .firstRowOfTable, rowHeaderMode: RowHeaderMode = .firstColumnOfRow, rows: [(HTMLTextConvertible?, HTMLTextConvertible?, HTMLTextConvertible?)]) -> Table {
         Self(title: title, columnHeaderMode: columnHeaderMode, rowHeaderMode: rowHeaderMode, rows: rows.map { [$0.0, $0.1, $0.2] })
     }
 
-    static func fourColumns(title: HTMLTextConvertible?, columnHeaderMode: ColumnHeaderMode = .firstRowOfTable, rowHeaderMode: RowHeaderMode = .firstColumnOfRow, rows: [(Data, Data, Data, Data)]) -> Table {
+    static func fourColumns(title: HTMLTextConvertible?, columnHeaderMode: ColumnHeaderMode = .firstRowOfTable, rowHeaderMode: RowHeaderMode = .firstColumnOfRow, rows: [(HTMLTextConvertible?, HTMLTextConvertible?, HTMLTextConvertible?, HTMLTextConvertible?)]) -> Table {
         Self(title: title, columnHeaderMode: columnHeaderMode, rowHeaderMode: rowHeaderMode, rows: rows.map { [$0.0, $0.1, $0.2, $0.3] })
     }
 
-    static func fiveColumns(title: HTMLTextConvertible?, columnHeaderMode: ColumnHeaderMode = .firstRowOfTable, rowHeaderMode: RowHeaderMode = .firstColumnOfRow, rows: [(Data, Data, Data, Data, Data)]) -> Table {
+    static func fiveColumns(title: HTMLTextConvertible?, columnHeaderMode: ColumnHeaderMode = .firstRowOfTable, rowHeaderMode: RowHeaderMode = .firstColumnOfRow, rows: [(HTMLTextConvertible?, HTMLTextConvertible?, HTMLTextConvertible?, HTMLTextConvertible?, HTMLTextConvertible?)]) -> Table {
         Self(title: title, columnHeaderMode: columnHeaderMode, rowHeaderMode: rowHeaderMode, rows: rows.map { [$0.0, $0.1, $0.2, $0.3, $0.4] })
+    }
+    
+    static func sixColumns(title: HTMLTextConvertible?, columnHeaderMode: ColumnHeaderMode = .firstRowOfTable, rowHeaderMode: RowHeaderMode = .firstColumnOfRow, rows: [(HTMLTextConvertible?, HTMLTextConvertible?, HTMLTextConvertible?, HTMLTextConvertible?, HTMLTextConvertible?, HTMLTextConvertible?)]) -> Table {
+        Self(title: title, columnHeaderMode: columnHeaderMode, rowHeaderMode: rowHeaderMode, rows: rows.map { [$0.0, $0.1, $0.2, $0.3, $0.4, $0.5] })
     }
 }
