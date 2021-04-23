@@ -12,8 +12,8 @@ public struct HTMLDuration {
         self.interval = interval
     }
 
-    public init(start: Date, finish: Date) {
-        self.init(interval: DateInterval(start: start, end: start))
+    public init(start: Date, end: Date) {
+        self.init(interval: DateInterval(start: start, end: end))
     }
 }
 
