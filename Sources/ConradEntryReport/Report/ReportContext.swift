@@ -22,7 +22,8 @@ public extension Report {
         private var dateFormatterCache: [DateTimeStyle: DateFormatter] = [:]
         private var dateIntervalFormatterCache: [DateTimeStyle: DateIntervalFormatter] = [:]
 
-        #if !os(Linux)
+        #if !os(Linux) && !os(Windows)
+            private lazy var dateComponentsFormatter: DateComponentsFormatter = makeDateComponentsFormatter()
             private lazy var measurementFormatter: MeasurementFormatter = makeMeasurementFormatter()
             private lazy var listFormatter: ListFormatter = makeListFormatter()
         #endif
@@ -82,6 +83,15 @@ public extension Report.Context {
             dateIntervalFormatterCache[style] = formatter
             return formatter.string(from: interval)!
         }
+    }
+
+    func localizedString(forDurationIn interval: DateInterval) -> String {
+        #if os(Linux) || os(Windows)
+            let dateComponents = calendar.dateComponents([.day, .hour, .minute], from: interval.start, to: interval.end)
+            return LinuxDateComponentsFormatter.localizedString(from: dateComponents)!
+        #else
+            dateComponentsFormatter.string(from: interval.start, to: interval.end)!
+        #endif
     }
 }
 
@@ -170,7 +180,16 @@ private extension Report.Context {
         return formatter
     }
 
-    #if !os(Linux)
+    #if !os(Linux) && !os(Windows)
+        func makeDateComponentsFormatter() -> DateComponentsFormatter {
+            let formatter = DateComponentsFormatter()
+            formatter.collapsesLargestUnit = true
+            formatter.calendar = calendar
+            formatter.zeroFormattingBehavior = .dropAll
+            formatter.unitsStyle = .short
+            return formatter
+        }
+
         func makeMeasurementFormatter() -> MeasurementFormatter {
             let formatter = MeasurementFormatter()
             formatter.locale = locale

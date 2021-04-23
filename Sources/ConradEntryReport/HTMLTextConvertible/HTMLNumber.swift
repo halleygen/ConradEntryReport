@@ -5,7 +5,7 @@
 
 import Foundation
 
-public struct Number {
+public struct HTMLNumber {
     private let mode: Mode
     private let style: NumberFormatter.Style
 
@@ -31,7 +31,7 @@ public struct Number {
     }
 }
 
-extension Number: HTMLTextConvertible {
+extension HTMLNumber: HTMLTextConvertible {
     public func htmlString(context: Report.Context) -> String {
         context.localizedString(for: mode.nsNumber, style: style)
     }

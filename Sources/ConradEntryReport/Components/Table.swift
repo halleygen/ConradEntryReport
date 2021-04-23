@@ -156,7 +156,7 @@ public extension Table {
     static func fiveColumns(title: HTMLTextConvertible?, columnHeaderMode: ColumnHeaderMode = .firstRowOfTable, rowHeaderMode: RowHeaderMode = .firstColumnOfRow, rows: [(HTMLTextConvertible?, HTMLTextConvertible?, HTMLTextConvertible?, HTMLTextConvertible?, HTMLTextConvertible?)]) -> Table {
         Self(title: title, columnHeaderMode: columnHeaderMode, rowHeaderMode: rowHeaderMode, rows: rows.map { [$0.0, $0.1, $0.2, $0.3, $0.4] })
     }
-    
+
     static func sixColumns(title: HTMLTextConvertible?, columnHeaderMode: ColumnHeaderMode = .firstRowOfTable, rowHeaderMode: RowHeaderMode = .firstColumnOfRow, rows: [(HTMLTextConvertible?, HTMLTextConvertible?, HTMLTextConvertible?, HTMLTextConvertible?, HTMLTextConvertible?, HTMLTextConvertible?)]) -> Table {
         Self(title: title, columnHeaderMode: columnHeaderMode, rowHeaderMode: rowHeaderMode, rows: rows.map { [$0.0, $0.1, $0.2, $0.3, $0.4, $0.5] })
     }
