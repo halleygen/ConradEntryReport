@@ -204,6 +204,7 @@ private extension Report.Context {
             let formatter = MeasurementFormatter()
             formatter.locale = locale
             formatter.unitOptions = .providedUnit
+            formatter.numberFormatter.maximumFractionDigits = 3
             return formatter
         }
 

@@ -17,3 +17,8 @@ public final class UnitDischargeRate: Dimension {
     public static let wetMetricTonnesPerDay = UnitDischargeRate(symbol: "WMT/day", converter: UnitConverterLinear(coefficient: 24))
     public static let dryMetricTonnesPerDay = UnitDischargeRate(symbol: "DMT/day", converter: UnitConverterLinear(coefficient: 24))
 }
+
+public final class UnitScreenAperture: Unit {
+    public static let micron = UnitScreenAperture(symbol: "micron")
+    public static let millimetre = UnitScreenAperture(symbol: "mm")
+}
