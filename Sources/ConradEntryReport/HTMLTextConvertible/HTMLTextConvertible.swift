@@ -18,6 +18,14 @@ public extension HTMLTextConvertible {
 
 // MARK: - Implementations
 
+// MARK: Bool
+
+extension Bool: HTMLTextConvertible {
+    public func htmlString(context: Report.Context) -> String {
+        self ? "Yes" : "No"
+    }
+}
+
 // MARK: String
 
 extension String: HTMLTextConvertible {
