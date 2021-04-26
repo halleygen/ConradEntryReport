@@ -10,7 +10,7 @@ public struct HTMLDate: Hashable {
     public var dateStyle: DateFormatter.Style
     public var timeStyle: DateFormatter.Style
 
-    public init(value: Date, dateStyle: DateFormatter.Style = .medium, timeStyle: DateFormatter.Style = .short) {
+    public init(_ value: Date, dateStyle: DateFormatter.Style = .medium, timeStyle: DateFormatter.Style = .short) {
         self.value = value
         self.dateStyle = dateStyle
         self.timeStyle = timeStyle
