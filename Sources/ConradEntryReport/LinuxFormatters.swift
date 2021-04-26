@@ -21,7 +21,7 @@ import Foundation
             var string = ""
             appendToString(&string, value: dateComponents.year, symbol: ("yr", "yrs"))
             appendToString(&string, value: dateComponents.month, symbol: ("mth", "mths"))
-            appendToString(&string, value: dateComponents.weekOfYear, symbol: ("wk", "wks"))
+            appendToString(&string, value: dateComponents.weekOfMonth, symbol: ("wk", "wks"))
             appendToString(&string, value: dateComponents.day, symbol: ("day", "days"))
             appendToString(&string, value: dateComponents.hour, symbol: ("hr", "hrs"))
             appendToString(&string, value: dateComponents.minute, symbol: ("min", "mins"))

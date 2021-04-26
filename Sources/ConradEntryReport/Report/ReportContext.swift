@@ -23,7 +23,7 @@ public extension Report {
         private var dateIntervalFormatterCache: [DateTimeStyle: DateIntervalFormatter] = [:]
 
         #if !os(Linux) && !os(Windows)
-            private lazy var dateComponentsFormatter: DateComponentsFormatter = makeDateComponentsFormatter()
+            private var dateComponentsFormatterCache: [NSCalendar.Unit: DateComponentsFormatter] = [:]
             private lazy var measurementFormatter: MeasurementFormatter = makeMeasurementFormatter()
             private lazy var listFormatter: ListFormatter = makeListFormatter()
         #endif
@@ -85,12 +85,21 @@ public extension Report.Context {
         }
     }
 
-    func localizedString(forDurationIn interval: DateInterval) -> String {
+    func localizedString(forDurationIn interval: DateInterval, allowedUnits: NSCalendar.Unit) -> String {
         #if os(Linux) || os(Windows)
-            let dateComponents = calendar.dateComponents([.day, .hour, .minute], from: interval.start, to: interval.end)
+            let components = Calendar.Component.from(allowedUnits)
+            let dateComponents = calendar.dateComponents(components, from: interval.start, to: interval.end)
             return LinuxDateComponentsFormatter.localizedString(from: dateComponents)!
         #else
-            dateComponentsFormatter.string(from: interval.start, to: interval.end)!
+            let dateComponentsFormatter: DateComponentsFormatter
+            if let cached = dateComponentsFormatterCache[allowedUnits] {
+                dateComponentsFormatter = cached
+            } else {
+                let new = makeDateComponentsFormatter(allowedUnits: allowedUnits)
+                dateComponentsFormatterCache[allowedUnits] = new
+                dateComponentsFormatter = new
+            }
+            return dateComponentsFormatter.string(from: interval.start, to: interval.end)!
         #endif
     }
 }
@@ -181,12 +190,13 @@ private extension Report.Context {
     }
 
     #if !os(Linux) && !os(Windows)
-        func makeDateComponentsFormatter() -> DateComponentsFormatter {
+        func makeDateComponentsFormatter(allowedUnits: NSCalendar.Unit) -> DateComponentsFormatter {
             let formatter = DateComponentsFormatter()
             formatter.collapsesLargestUnit = true
             formatter.calendar = calendar
             formatter.zeroFormattingBehavior = .dropAll
             formatter.unitsStyle = .short
+            formatter.allowedUnits = allowedUnits
             return formatter
         }
 
