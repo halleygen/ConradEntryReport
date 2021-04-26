@@ -14,7 +14,7 @@ public struct Subsection {
 
     @_disfavoredOverload
     public init(heading: SubsectionHeading, components: ContiguousArray<HTMLComponent?>) {
-        self.init(heading: heading, components: ContiguousArray(components.compactMap { $0 }))
+        self.init(heading: heading, components: ContiguousArray(components.compacting()))
     }
 }
 

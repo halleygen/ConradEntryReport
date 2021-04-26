@@ -141,23 +141,58 @@ extension Table: HTMLComponent {
 // MARK: - Helpers
 
 public extension Table {
+    // MARK: 2 columns
+
     static func twoColumns(title: HTMLTextConvertible?, columnHeaderMode: ColumnHeaderMode = .firstRowOfTable, rowHeaderMode: RowHeaderMode = .firstColumnOfRow, rows: [(HTMLTextConvertible?, HTMLTextConvertible?)]) -> Table {
         Self(title: title, columnHeaderMode: columnHeaderMode, rowHeaderMode: rowHeaderMode, rows: rows.map { [$0.0, $0.1] })
     }
+
+    @_disfavoredOverload
+    static func twoColumns(title: HTMLTextConvertible?, columnHeaderMode: ColumnHeaderMode = .firstRowOfTable, rowHeaderMode: RowHeaderMode = .firstColumnOfRow, rows: [(HTMLTextConvertible?, HTMLTextConvertible?)?]) -> Table {
+        twoColumns(title: title, columnHeaderMode: columnHeaderMode, rowHeaderMode: rowHeaderMode, rows: rows.compacting())
+    }
+
+    // MARK: 3 columns
 
     static func threeColumns(title: HTMLTextConvertible?, columnHeaderMode: ColumnHeaderMode = .firstRowOfTable, rowHeaderMode: RowHeaderMode = .firstColumnOfRow, rows: [(HTMLTextConvertible?, HTMLTextConvertible?, HTMLTextConvertible?)]) -> Table {
         Self(title: title, columnHeaderMode: columnHeaderMode, rowHeaderMode: rowHeaderMode, rows: rows.map { [$0.0, $0.1, $0.2] })
     }
 
+    @_disfavoredOverload
+    static func threeColumns(title: HTMLTextConvertible?, columnHeaderMode: ColumnHeaderMode = .firstRowOfTable, rowHeaderMode: RowHeaderMode = .firstColumnOfRow, rows: [(HTMLTextConvertible?, HTMLTextConvertible?, HTMLTextConvertible?)?]) -> Table {
+        threeColumns(title: title, columnHeaderMode: columnHeaderMode, rowHeaderMode: rowHeaderMode, rows: rows.compacting())
+    }
+
+    // MARK: 4 columns
+
     static func fourColumns(title: HTMLTextConvertible?, columnHeaderMode: ColumnHeaderMode = .firstRowOfTable, rowHeaderMode: RowHeaderMode = .firstColumnOfRow, rows: [(HTMLTextConvertible?, HTMLTextConvertible?, HTMLTextConvertible?, HTMLTextConvertible?)]) -> Table {
         Self(title: title, columnHeaderMode: columnHeaderMode, rowHeaderMode: rowHeaderMode, rows: rows.map { [$0.0, $0.1, $0.2, $0.3] })
     }
+
+    @_disfavoredOverload
+    static func fourColumns(title: HTMLTextConvertible?, columnHeaderMode: ColumnHeaderMode = .firstRowOfTable, rowHeaderMode: RowHeaderMode = .firstColumnOfRow, rows: [(HTMLTextConvertible?, HTMLTextConvertible?, HTMLTextConvertible?, HTMLTextConvertible?)?]) -> Table {
+        fourColumns(title: title, columnHeaderMode: columnHeaderMode, rowHeaderMode: rowHeaderMode, rows: rows.compacting())
+    }
+
+    // MARK: 5 columns
 
     static func fiveColumns(title: HTMLTextConvertible?, columnHeaderMode: ColumnHeaderMode = .firstRowOfTable, rowHeaderMode: RowHeaderMode = .firstColumnOfRow, rows: [(HTMLTextConvertible?, HTMLTextConvertible?, HTMLTextConvertible?, HTMLTextConvertible?, HTMLTextConvertible?)]) -> Table {
         Self(title: title, columnHeaderMode: columnHeaderMode, rowHeaderMode: rowHeaderMode, rows: rows.map { [$0.0, $0.1, $0.2, $0.3, $0.4] })
     }
 
+    @_disfavoredOverload
+    static func fiveColumns(title: HTMLTextConvertible?, columnHeaderMode: ColumnHeaderMode = .firstRowOfTable, rowHeaderMode: RowHeaderMode = .firstColumnOfRow, rows: [(HTMLTextConvertible?, HTMLTextConvertible?, HTMLTextConvertible?, HTMLTextConvertible?, HTMLTextConvertible?)?]) -> Table {
+        fiveColumns(title: title, columnHeaderMode: columnHeaderMode, rowHeaderMode: rowHeaderMode, rows: rows.compacting())
+    }
+
+    // MARK: 6 columns
+
     static func sixColumns(title: HTMLTextConvertible?, columnHeaderMode: ColumnHeaderMode = .firstRowOfTable, rowHeaderMode: RowHeaderMode = .firstColumnOfRow, rows: [(HTMLTextConvertible?, HTMLTextConvertible?, HTMLTextConvertible?, HTMLTextConvertible?, HTMLTextConvertible?, HTMLTextConvertible?)]) -> Table {
         Self(title: title, columnHeaderMode: columnHeaderMode, rowHeaderMode: rowHeaderMode, rows: rows.map { [$0.0, $0.1, $0.2, $0.3, $0.4, $0.5] })
+    }
+
+    @_disfavoredOverload
+    static func sixColumns(title: HTMLTextConvertible?, columnHeaderMode: ColumnHeaderMode = .firstRowOfTable, rowHeaderMode: RowHeaderMode = .firstColumnOfRow, rows: [(HTMLTextConvertible?, HTMLTextConvertible?, HTMLTextConvertible?, HTMLTextConvertible?, HTMLTextConvertible?, HTMLTextConvertible?)?]) -> Table {
+        sixColumns(title: title, columnHeaderMode: columnHeaderMode, rowHeaderMode: rowHeaderMode, rows: rows.compacting())
     }
 }
