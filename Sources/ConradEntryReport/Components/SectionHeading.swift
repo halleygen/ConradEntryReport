@@ -12,6 +12,7 @@ protocol Heading: ExpressibleByStringLiteral, HTMLComponent where StringLiteralT
     static var tagName: String { get }
     var content: HTMLTextConvertible { get set }
     init(content: HTMLTextConvertible)
+    init(stringLiteral value: StringLiteralType)
 }
 
 extension Heading {
