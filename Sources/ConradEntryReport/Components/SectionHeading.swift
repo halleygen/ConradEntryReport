@@ -8,18 +8,13 @@ import SwiftSoup
 
 // MARK: - Heading
 
-protocol Heading: ExpressibleByStringLiteral, HTMLComponent where StringLiteralType == String {
+protocol Heading: ExpressibleByStringLiteral, HTMLComponent {
     static var tagName: String { get }
     var content: HTMLTextConvertible { get set }
     init(content: HTMLTextConvertible)
-    init(stringLiteral value: StringLiteralType)
 }
 
 extension Heading {
-    public init(stringLiteral value: StringLiteralType) {
-        self.init(content: value)
-    }
-
     public func htmlNode(context: Report.Context) throws -> HTMLNode {
         let element = HTMLElement(Tag(Self.tagName), "")
         try element.text(content.htmlString(context: context))
@@ -36,6 +31,10 @@ public struct DocumentHeading: Heading {
     public init(content: HTMLTextConvertible) {
         self.content = content
     }
+
+    public init(stringLiteral value: String) {
+        self.init(content: value)
+    }
 }
 
 // MARK: - SectionHeading
@@ -47,6 +46,10 @@ public struct SectionHeading: Heading {
     public init(content: HTMLTextConvertible) {
         self.content = content
     }
+
+    public init(stringLiteral value: String) {
+        self.init(content: value)
+    }
 }
 
 // MARK: - SubsectionHeading
@@ -57,5 +60,9 @@ public struct SubsectionHeading: Heading {
 
     public init(content: HTMLTextConvertible) {
         self.content = content
+    }
+
+    public init(stringLiteral value: String) {
+        self.init(content: value)
     }
 }
