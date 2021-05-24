@@ -8,6 +8,7 @@ import Foundation
 public final class Report {
     // MARK: - Properties
 
+    public var configuration: Configuration
     public var titlePage: TitlePage
     public var sections: ContiguousArray<Section>
 
@@ -16,7 +17,8 @@ public final class Report {
 
     // MARK: - Init
 
-    public init(titlePage: TitlePage, sections: ContiguousArray<Section> = [], timeZone: TimeZone) {
+    public init(title: String, titlePage: TitlePage, sections: ContiguousArray<Section> = [], timeZone: TimeZone) {
+        self.configuration = Configuration(title: title)
         self.titlePage = titlePage
         self.sections = sections
         self.timeZone = timeZone
@@ -30,12 +32,9 @@ public extension Report {
         let context = existingContext ?? Context(template: .reportTemplate, localTimeZone: timeZone)
         self.context = context
 
-        let body: HTMLElement
-        if let existing = context.template.body() {
-            body = existing
-        } else {
-            body = try context.template.appendElement(.body)
-        }
+        try context.template.appendChild(try configuration.htmlNode(context: context))
+
+        let body = try context.template.appendElement(.body)
 
         let titlePageElement = try titlePage.htmlNode(context: context)
         try body.appendChild(titlePageElement)

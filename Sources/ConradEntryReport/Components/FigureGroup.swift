@@ -54,3 +54,11 @@ extension FigureGroup: RandomAccessCollection {
     @inlinable
     public var endIndex: ContiguousArray<Figure>.Index { figures.endIndex }
 }
+
+// MARK: - ExpressibleByArrayLiteral
+
+extension FigureGroup: ExpressibleByArrayLiteral {
+    public init(arrayLiteral elements: ContiguousArray<Figure>.Element...) {
+        self.init(ContiguousArray(elements))
+    }
+}
