@@ -17,14 +17,16 @@ public extension Report {
 
 extension Report.Configuration: HTMLComponent {
     public func htmlNode(context: Report.Context) throws -> HTMLNode {
-        let head = HTMLElement(.head, "")
+        let node = HTMLTextNode("", nil)
 
-        let styleElement = try head.appendElement(.style)
+        let styleElement = HTMLElement(.style, "")
         try styleElement.text(try styles.serialize(locale: context.locale))
 
-        let titleElement = try head.appendElement(.title)
+        let titleElement = HTMLElement(.title, "")
         try titleElement.text(title)
 
-        return head
+        try node.addChildren(styleElement, titleElement)
+
+        return node
     }
 }
