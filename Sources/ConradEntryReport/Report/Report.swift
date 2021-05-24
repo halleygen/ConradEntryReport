@@ -32,9 +32,20 @@ public extension Report {
         let context = existingContext ?? Context(template: .reportTemplate, localTimeZone: timeZone)
         self.context = context
 
-        try context.template.appendChild(try configuration.htmlNode(context: context))
+        let head: HTMLElement
+        if let existing = context.template.head() {
+            head = existing
+        } else {
+            head = try context.template.appendElement(.head)
+        }
+        try head.appendChild(try configuration.htmlNode(context: context))
 
-        let body = try context.template.appendElement(.body)
+        let body: HTMLElement
+        if let existing = context.template.body() {
+            body = existing
+        } else {
+            body = try context.template.appendElement(.body)
+        }
 
         let titlePageElement = try titlePage.htmlNode(context: context)
         try body.appendChild(titlePageElement)
