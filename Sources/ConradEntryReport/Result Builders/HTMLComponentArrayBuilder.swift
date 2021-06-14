@@ -1,41 +1,39 @@
 //
-//  File.swift
-//  
-//
-//  Created by Jesse Halley on 14/6/21.
+// ConradEntryReport
+// Copyright © 2021 Jesse Halley. All rights reserved.
 //
 
 @resultBuilder
-enum HTMLComponentArrayBuilder {
-    static func buildBlock(_ components: [HTMLComponent]...) -> [HTMLComponent] {
+public enum HTMLComponentArrayBuilder {
+    public static func buildBlock(_ components: [HTMLComponent]...) -> [HTMLComponent] {
         components.flatMap { $0 }
     }
-    
-    static func buildExpression(_ expression: HTMLComponent) -> [HTMLComponent] {
+
+    public static func buildExpression(_ expression: HTMLComponent) -> [HTMLComponent] {
         [expression]
     }
-    
-    static func buildExpression(_ expression: HTMLComponent?) -> [HTMLComponent] {
+
+    public static func buildExpression(_ expression: HTMLComponent?) -> [HTMLComponent] {
         if let expression = expression {
             return [expression]
         } else {
             return []
         }
     }
-    
-    static func buildOptional(_ component: [HTMLComponent]?) -> [HTMLComponent] {
+
+    public static func buildOptional(_ component: [HTMLComponent]?) -> [HTMLComponent] {
         component ?? []
     }
-    
-    static func buildEither(first component: [HTMLComponent]) -> [HTMLComponent] {
+
+    public static func buildEither(first component: [HTMLComponent]) -> [HTMLComponent] {
         component
     }
-    
-    static func buildEither(second component: [HTMLComponent]) -> [HTMLComponent] {
+
+    public static func buildEither(second component: [HTMLComponent]) -> [HTMLComponent] {
         component
     }
-    
-    static func buildFinalResult(_ component: [HTMLComponent]) -> ContiguousArray<HTMLComponent> {
+
+    public static func buildFinalResult(_ component: [HTMLComponent]) -> ContiguousArray<HTMLComponent> {
         ContiguousArray(component)
     }
 }
