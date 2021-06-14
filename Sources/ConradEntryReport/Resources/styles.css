@@ -9,3 +9,4 @@ a img {border: none}
 sup, sub {line-height: 0}
 
 section {page-break-after: always;}
+img {max-width: 100%;}

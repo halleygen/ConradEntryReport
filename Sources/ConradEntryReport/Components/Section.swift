@@ -7,6 +7,10 @@ public struct Section {
     public var heading: SectionHeading
     public var components: ContiguousArray<HTMLComponent>
 
+    public init(heading: SectionHeading, @HTMLComponentArrayBuilder components: () -> ContiguousArray<HTMLComponent>) {
+        self.init(heading: heading, components: components())
+    }
+
     public init(heading: SectionHeading, components: ContiguousArray<HTMLComponent>) {
         self.heading = heading
         self.components = components

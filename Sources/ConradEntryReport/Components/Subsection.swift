@@ -7,6 +7,10 @@ public struct Subsection {
     public var heading: SubsectionHeading
     public var components: ContiguousArray<HTMLComponent>
 
+    public init(heading: SubsectionHeading, @HTMLComponentArrayBuilder components: () -> ContiguousArray<HTMLComponent>) {
+        self.init(heading: heading, components: components())
+    }
+
     public init(heading: SubsectionHeading, components: ContiguousArray<HTMLComponent>) {
         self.heading = heading
         self.components = components
@@ -34,6 +38,3 @@ extension Subsection: HTMLComponent {
         return sectionElement
     }
 }
-
-let sect = Section(heading: "Heading", components: [
-])
