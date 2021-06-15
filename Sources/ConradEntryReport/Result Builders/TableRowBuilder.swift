@@ -5,7 +5,7 @@
 
 // MARK: - TableRowBuilder Protocol
 
-protocol TableRowBuilder {
+public protocol TableRowBuilder {
     associatedtype Row
 
     static func buildBlock(_ components: [Row]...) -> [Row]
@@ -16,16 +16,16 @@ protocol TableRowBuilder {
     static func buildFinalResult(_ component: [Row]) -> [[Table.Data]]
 }
 
-extension TableRowBuilder {
-    public static func buildBlock(_ components: [Row]...) -> [Row] {
+public extension TableRowBuilder {
+    static func buildBlock(_ components: [Row]...) -> [Row] {
         components.flatMap { $0 }
     }
 
-    public static func buildExpression(_ expression: Row) -> [Row] {
+    static func buildExpression(_ expression: Row) -> [Row] {
         [expression]
     }
 
-    public static func buildOptional(_ component: [Row]?) -> [Row] {
+    static func buildOptional(_ component: [Row]?) -> [Row] {
         if let component = component {
             return component
         } else {
@@ -33,11 +33,11 @@ extension TableRowBuilder {
         }
     }
 
-    public static func buildEither(first component: [Row]) -> [Row] {
+    static func buildEither(first component: [Row]) -> [Row] {
         component
     }
 
-    public static func buildEither(second component: [Row]) -> [Row] {
+    static func buildEither(second component: [Row]) -> [Row] {
         component
     }
 }
@@ -46,13 +46,13 @@ extension TableRowBuilder {
 
 @resultBuilder
 public enum SingleColumnTableRowBuilder: TableRowBuilder {
-    typealias Row = Table.Data
+    public typealias Row = Table.Data
 
-    static func buildExpression(_ expression: HTMLTextConvertible) -> [Table.Data] {
+    public static func buildExpression(_ expression: HTMLTextConvertible) -> [Table.Data] {
         [Table.Data(expression)]
     }
 
-    static func buildFinalResult(_ component: [Table.Data]) -> [[Table.Data]] {
+    public static func buildFinalResult(_ component: [Table.Data]) -> [[Table.Data]] {
         [component]
     }
 }
