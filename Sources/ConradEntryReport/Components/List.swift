@@ -21,6 +21,10 @@ public extension List {
     init(_ kind: Kind, items: [HTMLTextConvertible], emptyText: String = "None") {
         self.init(kind, items: ContiguousArray(items), emptyText: emptyText)
     }
+
+    init(_ kind: Kind, items: [HTMLTextConvertible]..., emptyText: String = "None") {
+        self.init(kind, items: ContiguousArray(items.flatMap { $0 }), emptyText: emptyText)
+    }
 }
 
 public extension List {
