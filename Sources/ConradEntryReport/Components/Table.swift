@@ -11,7 +11,7 @@ public struct Table {
     public var columnHeaderMode: ColumnHeaderMode
     public var rowHeaderMode: RowHeaderMode
 
-    public init(title: HTMLTextConvertible?, columnHeaderMode: ColumnHeaderMode = .firstRowOfTable, rowHeaderMode: RowHeaderMode = .firstColumnOfRow, rows: [[Data]]) {
+    public init(title: HTMLTextConvertible?, columnHeaderMode: ColumnHeaderMode = .none, rowHeaderMode: RowHeaderMode = .none, rows: [[Data]]) {
         self.title = title
         self.rows = rows
         self.columnHeaderMode = columnHeaderMode
@@ -19,7 +19,7 @@ public struct Table {
     }
 
     @_disfavoredOverload
-    public init(title: HTMLTextConvertible?, columnHeaderMode: ColumnHeaderMode = .firstRowOfTable, rowHeaderMode: RowHeaderMode = .firstColumnOfRow, rows: [[HTMLTextConvertible?]]) {
+    public init(title: HTMLTextConvertible?, columnHeaderMode: ColumnHeaderMode = .none, rowHeaderMode: RowHeaderMode = .none, rows: [[HTMLTextConvertible?]]) {
         let mapped = rows.map { row -> [Data] in
             row.map { Data($0) }
         }
@@ -91,12 +91,12 @@ public extension Table {
         Table(title: title, columnHeaderMode: columnHeaderMode, rowHeaderMode: rowHeaderMode, rows: rows)
     }
 
-    func columnHeaderMode(_ columnHeaderMode: ColumnHeaderMode) -> Table {
-        Table(title: title, columnHeaderMode: columnHeaderMode, rowHeaderMode: rowHeaderMode, rows: rows)
+    func columnHeaderMode(_ columnHeaderMode: ColumnHeaderMode?) -> Table {
+        Table(title: title, columnHeaderMode: columnHeaderMode ?? .none, rowHeaderMode: rowHeaderMode, rows: rows)
     }
 
-    func rowHeaderMode(_ rowHeaderMode: RowHeaderMode) -> Table {
-        Table(title: title, columnHeaderMode: columnHeaderMode, rowHeaderMode: rowHeaderMode, rows: rows)
+    func rowHeaderMode(_ rowHeaderMode: RowHeaderMode?) -> Table {
+        Table(title: title, columnHeaderMode: columnHeaderMode, rowHeaderMode: rowHeaderMode ?? .none, rows: rows)
     }
 }
 
