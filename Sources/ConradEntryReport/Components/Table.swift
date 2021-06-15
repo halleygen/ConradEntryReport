@@ -47,9 +47,8 @@ public struct Table {
             value?.htmlString(context: context) ?? ""
         }
 
-        mutating func columnSpan(_ columnSpan: Int?) -> Self {
-            self.columnSpan = columnSpan ?? 1
-            return self
+        func columnSpan(_ columnSpan: Int?) -> Data {
+            Data(value, columnSpan: columnSpan ?? 1)
         }
 
         public static let empty: Data = .init(nil)
@@ -88,19 +87,16 @@ public extension Table {
         self.init(title: nil, rows: rows())
     }
 
-    mutating func title(_ title: HTMLTextConvertible?) -> Self {
-        self.title = title
-        return self
+    func title(_ title: HTMLTextConvertible?) -> Table {
+        Table(title: title, columnHeaderMode: columnHeaderMode, rowHeaderMode: rowHeaderMode, rows: rows)
     }
 
-    mutating func columnHeaderMode(_ columnHeaderMode: ColumnHeaderMode) -> Self {
-        self.columnHeaderMode = columnHeaderMode
-        return self
+    func columnHeaderMode(_ columnHeaderMode: ColumnHeaderMode) -> Table {
+        Table(title: title, columnHeaderMode: columnHeaderMode, rowHeaderMode: rowHeaderMode, rows: rows)
     }
 
-    mutating func rowHeaderMode(_ rowHeaderMode: RowHeaderMode) -> Self {
-        self.rowHeaderMode = rowHeaderMode
-        return self
+    func rowHeaderMode(_ rowHeaderMode: RowHeaderMode) -> Table {
+        Table(title: title, columnHeaderMode: columnHeaderMode, rowHeaderMode: rowHeaderMode, rows: rows)
     }
 }
 

@@ -112,6 +112,11 @@ public enum QuintupleColumnTableRowBuilder: TableRowBuilder {
         [(Table.Data(expression.0), Table.Data(expression.1), Table.Data(expression.2), Table.Data(expression.3), Table.Data(expression.4))]
     }
 
+    @_disfavoredOverload
+    public static func buildExpression(_ expression: (HTMLTextConvertible?, HTMLTextConvertible?, HTMLTextConvertible?, HTMLTextConvertible?, HTMLTextConvertible?)) -> [Row] {
+        [(Table.Data(expression.0), Table.Data(expression.1), Table.Data(expression.2), Table.Data(expression.3), Table.Data(expression.4))]
+    }
+
     public static func buildFinalResult(_ component: [Row]) -> [[Table.Data]] {
         component.map { [$0.0, $0.1, $0.2, $0.3, $0.4] }
     }
