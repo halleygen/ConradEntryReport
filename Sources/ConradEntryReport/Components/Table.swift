@@ -47,12 +47,52 @@ public struct Table {
             value?.htmlString(context: context) ?? ""
         }
 
+        mutating func columnSpan(_ columnSpan: Int?) -> Self {
+            self.columnSpan = columnSpan ?? 1
+            return self
+        }
+
         public static let empty: Data = .init(nil)
     }
 
     public enum Error: Swift.Error {
         case emptyTable
         case inconsistentRowLengths([[Data]])
+    }
+}
+
+// MARK: - Result Builder Helpers
+
+public extension Table {
+    init(@SingleColumnTableRowBuilder singleColumn rows: () -> [[Data]]) {
+        self.init(title: nil, rows: rows())
+    }
+
+    init(@DoubleColumnTableRowBuilder doubleColumn rows: () -> [[Data]]) {
+        self.init(title: nil, rows: rows())
+    }
+
+    init(@TripleColumnTableRowBuilder tripleColumn rows: () -> [[Data]]) {
+        self.init(title: nil, rows: rows())
+    }
+
+    init(@VariableColumnTableRowBuilder rows: () -> [[Data]]) {
+        self.init(title: nil, rows: rows())
+    }
+
+    mutating func title(_ title: HTMLTextConvertible?) -> Self {
+        self.title = title
+        return self
+    }
+
+    mutating func columnHeaderMode(_ columnHeaderMode: ColumnHeaderMode) -> Self {
+        self.columnHeaderMode = columnHeaderMode
+        return self
+    }
+
+    mutating func rowHeaderMode(_ rowHeaderMode: RowHeaderMode) -> Self {
+        self.rowHeaderMode = rowHeaderMode
+        return self
     }
 }
 
