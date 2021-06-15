@@ -10,6 +10,7 @@ public protocol TableRowBuilder {
 
     static func buildBlock(_ components: [Row]...) -> [Row]
     static func buildExpression(_ expression: Row) -> [Row]
+    static func buildExpression(_ expression: Row?) -> [Row]
     static func buildOptional(_ component: [Row]?) -> [Row]
     static func buildEither(first component: [Row]) -> [Row]
     static func buildEither(second component: [Row]) -> [Row]
@@ -23,6 +24,14 @@ public extension TableRowBuilder {
 
     static func buildExpression(_ expression: Row) -> [Row] {
         [expression]
+    }
+
+    static func buildExpression(_ expression: Row) -> [Row] {
+        if let expression = expression {
+            return [expression]
+        } else {
+            return []
+        }
     }
 
     static func buildOptional(_ component: [Row]?) -> [Row] {
