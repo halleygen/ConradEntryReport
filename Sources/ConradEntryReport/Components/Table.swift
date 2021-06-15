@@ -76,6 +76,14 @@ public extension Table {
         self.init(title: nil, rows: rows())
     }
 
+    init(@QuadrupleColumnTableRowBuilder quadrupleColumn rows: () -> [[Data]]) {
+        self.init(title: nil, rows: rows())
+    }
+
+    init(@QuintupleColumnTableRowBuilder quintupleColumn rows: () -> [[Data]]) {
+        self.init(title: nil, rows: rows())
+    }
+
     init(@VariableColumnTableRowBuilder rows: () -> [[Data]]) {
         self.init(title: nil, rows: rows())
     }

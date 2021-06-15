@@ -87,6 +87,36 @@ public enum TripleColumnTableRowBuilder: TableRowBuilder {
     }
 }
 
+// MARK: - QuadrupleColumnTableRowBuilder
+
+@resultBuilder
+public enum QuadrupleColumnTableRowBuilder: TableRowBuilder {
+    public typealias Row = (Table.Data, Table.Data, Table.Data, Table.Data)
+
+    public static func buildExpression(_ expression: (HTMLTextConvertible, HTMLTextConvertible, HTMLTextConvertible, HTMLTextConvertible)) -> [Row] {
+        [(Table.Data(expression.0), Table.Data(expression.1), Table.Data(expression.2), Table.Data(expression.3))]
+    }
+
+    public static func buildFinalResult(_ component: [Row]) -> [[Table.Data]] {
+        component.map { [$0.0, $0.1, $0.2, $0.3] }
+    }
+}
+
+// MARK: - QuintupleColumnTableRowBuilder
+
+@resultBuilder
+public enum QuintupleColumnTableRowBuilder: TableRowBuilder {
+    public typealias Row = (Table.Data, Table.Data, Table.Data, Table.Data, Table.Data)
+
+    public static func buildExpression(_ expression: (HTMLTextConvertible, HTMLTextConvertible, HTMLTextConvertible, HTMLTextConvertible, HTMLTextConvertible)) -> [Row] {
+        [(Table.Data(expression.0), Table.Data(expression.1), Table.Data(expression.2), Table.Data(expression.3), Table.Data(expression.4))]
+    }
+
+    public static func buildFinalResult(_ component: [Row]) -> [[Table.Data]] {
+        component.map { [$0.0, $0.1, $0.2, $0.3, $0.4] }
+    }
+}
+
 // MARK: - VariableColumnTableRowBuilder
 
 @resultBuilder
