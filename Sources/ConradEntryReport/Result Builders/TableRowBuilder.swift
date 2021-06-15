@@ -26,7 +26,7 @@ public extension TableRowBuilder {
         [expression]
     }
 
-    static func buildExpression(_ expression: Row) -> [Row] {
+    static func buildExpression(_ expression: Row?) -> [Row] {
         if let expression = expression {
             return [expression]
         } else {
