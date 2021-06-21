@@ -10,13 +10,7 @@ public extension Report {
         public let template: HTMLDocument
         public let locale: Locale
         public let localTimeZone: TimeZone
-
-        private(set) lazy var calendar: Calendar = {
-            var calendar = Calendar(identifier: .iso8601)
-            calendar.timeZone = localTimeZone
-            calendar.locale = locale
-            return calendar
-        }()
+        public let calendar: Calendar
 
         private var numberFormatterCache: [NumberFormatter.Style: NumberFormatter] = [:]
         private var dateFormatterCache: [DateTimeStyle: DateFormatter] = [:]
@@ -28,10 +22,15 @@ public extension Report {
             private lazy var listFormatter: ListFormatter = makeListFormatter()
         #endif
 
-        init(template: HTMLDocument, localTimeZone: TimeZone, locale: Locale = .posix) {
+        init(template: HTMLDocument, localTimeZone: TimeZone, locale: Locale = .posix, calendarID: Calendar.Identifier = .iso8601) {
             self.template = template
             self.localTimeZone = localTimeZone
             self.locale = locale
+
+            var calendar = Calendar(identifier: calendarID)
+            calendar.timeZone = localTimeZone
+            calendar.locale = locale
+            self.calendar = calendar
         }
     }
 }
