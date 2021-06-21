@@ -14,14 +14,18 @@ public final class Report {
 
     public private(set) var context: Context?
     private let timeZone: TimeZone
+    private let calendarID: Calendar.Identifier
+    private let locale: Locale
 
     // MARK: - Init
 
-    public init(title: String, titlePage: TitlePage, sections: ContiguousArray<Section> = [], timeZone: TimeZone) {
+    public init(title: String, titlePage: TitlePage, sections: ContiguousArray<Section> = [], timeZone: TimeZone, calendarID: Calendar.Identifier = .iso8601, locale: Locale = .posix) {
         self.configuration = Configuration(title: title)
         self.titlePage = titlePage
         self.sections = sections
         self.timeZone = timeZone
+        self.calendarID = calendarID
+        self.locale = locale
     }
 }
 
@@ -29,7 +33,7 @@ public final class Report {
 
 public extension Report {
     func generateHTML(context existingContext: Context? = nil) throws -> String {
-        let context = existingContext ?? Context(template: .reportTemplate, localTimeZone: timeZone)
+        let context = existingContext ?? Context(template: .reportTemplate, localTimeZone: timeZone, locale: locale, calendarID: calendarID)
         self.context = context
 
         let head: HTMLElement
