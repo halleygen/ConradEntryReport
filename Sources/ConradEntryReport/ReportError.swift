@@ -4,6 +4,5 @@
 //
 
 public enum ReportError: Error {
-    case utf8EncodeFailure(String)
     case emptyTable(Table)
 }

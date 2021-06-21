@@ -61,8 +61,7 @@ public extension Report {
     @discardableResult
     func saveGeneratedHTML(to destination: URL, context existingContext: Context? = nil) throws -> URL {
         let html = try generateHTML(context: existingContext)
-        guard let data = html.data(using: .utf8) else { throw ReportError.utf8EncodeFailure(html) }
-        try data.write(to: destination, options: .atomic)
+        try Data(html.utf8).write(to: destination, options: .atomic)
         return destination
     }
 }
