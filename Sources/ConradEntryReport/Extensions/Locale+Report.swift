@@ -5,6 +5,6 @@
 
 import Foundation
 
-extension Locale {
-    static var posix: Self { Locale(identifier: "en_US_POSIX") }
+public extension Locale {
+    static let posix = Locale(identifier: "en_US_POSIX")
 }

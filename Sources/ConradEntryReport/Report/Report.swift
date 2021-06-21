@@ -19,13 +19,17 @@ public final class Report {
 
     // MARK: - Init
 
-    public init(title: String, titlePage: TitlePage, sections: ContiguousArray<Section> = [], timeZone: TimeZone, calendarID: Calendar.Identifier = .iso8601, locale: Locale = .posix) {
+    public init(title: String, titlePage: TitlePage, timeZone: TimeZone, calendarID: Calendar.Identifier = .iso8601, locale: Locale = .posix, sections: ContiguousArray<Section> = []) {
         self.configuration = Configuration(title: title)
         self.titlePage = titlePage
         self.sections = sections
         self.timeZone = timeZone
         self.calendarID = calendarID
         self.locale = locale
+    }
+
+    public convenience init(title: String, titlePage: TitlePage, timeZone: TimeZone, calendarID: Calendar.Identifier = .iso8601, locale: Locale = .posix, @ReportSectionArrayBuilder sections: () -> ContiguousArray<Section>) {
+        self.init(title: title, titlePage: titlePage, timeZone: timeZone, calendarID: calendarID, locale: locale, sections: sections())
     }
 }
 
