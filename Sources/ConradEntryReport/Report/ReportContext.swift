@@ -22,12 +22,12 @@ public extension Report {
             private lazy var listFormatter: ListFormatter = makeListFormatter()
         #endif
 
-        init(template: HTMLDocument, localTimeZone: TimeZone, locale: Locale = .posix, calendarID: Calendar.Identifier = .iso8601) {
+        init(template: HTMLDocument, localTimeZone: TimeZone, calendarID: Calendar.Identifier? = nil, locale: Locale? = nil) {
             self.template = template
             self.localTimeZone = localTimeZone
-            self.locale = locale
+            self.locale = locale ?? .posix
 
-            var calendar = Calendar(identifier: calendarID)
+            var calendar = Calendar(identifier: calendarID ?? .iso8601)
             calendar.timeZone = localTimeZone
             calendar.locale = locale
             self.calendar = calendar
