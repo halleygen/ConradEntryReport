@@ -8,9 +8,12 @@ import Foundation
 public final class Report {
     // MARK: - Properties
 
-    public var configuration: Configuration
+    public var title: String
     public var titlePage: TitlePage
     public var sections: ContiguousArray<Section>
+
+    public var printOptions = PrintOptions()
+    public var styleClasses: [StyleClass] = []
 
     public private(set) var context: Context?
     private let timeZone: TimeZone
@@ -20,7 +23,7 @@ public final class Report {
     // MARK: - Init
 
     public init(title: String, titlePage: TitlePage, timeZone: TimeZone, calendarID: Calendar.Identifier? = nil, locale: Locale? = nil, sections: ContiguousArray<Section> = []) {
-        self.configuration = Configuration(title: title)
+        self.title = title
         self.titlePage = titlePage
         self.sections = sections
         self.timeZone = timeZone
@@ -36,6 +39,10 @@ public final class Report {
 // MARK: - Functions
 
 public extension Report {
+    private var allStyleClasses: [StyleClass] {
+        styleClasses + CollectionOfOne(StyleClass(printOptions: printOptions))
+    }
+
     func generateHTML(context existingContext: Context? = nil) throws -> String {
         let context = existingContext ?? Context(template: .reportTemplate, localTimeZone: timeZone, calendarID: calendarID, locale: locale)
         self.context = context
@@ -46,7 +53,10 @@ public extension Report {
         } else {
             head = try context.template.appendElement(.head)
         }
-        try head.appendChild(try configuration.htmlNode(context: context))
+        let titleElement = try head.appendElement(.title)
+        try titleElement.text(title)
+        let styleElement = try head.appendElement(.style)
+        try styleElement.html(allStyleClasses.serialised())
 
         let body: HTMLElement
         if let existing = context.template.body() {
