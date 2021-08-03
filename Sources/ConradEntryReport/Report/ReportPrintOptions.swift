@@ -10,11 +10,34 @@ public extension Report {
         public let pageSize: PageSize
         public let pageOrientation: PageOrientation
         public let pageMargins: PageMargins
+        public let header: Header
+        public let footer: Footer
 
-        public init(pageSize: PageSize = .a4, pageOrientation: PageOrientation = .portrait, pageMargins: PageMargins = .default) {
+        public init(pageSize: PageSize = .a4, pageOrientation: PageOrientation = .portrait, pageMargins: PageMargins = .default, header: Header = Header(), footer: Footer = Footer(pageCounter: .currentAndTotal, copyright: "© Conrad Partners Ltd.")) {
             self.pageSize = pageSize
             self.pageMargins = pageMargins
             self.pageOrientation = pageOrientation
+            self.header = header
+            self.footer = footer
+        }
+
+        func serialised() -> String {
+            var string = "@page {"
+            string.append("size: \(pageSize) \(pageOrientation);\n")
+            string.append("margin: \(pageMargins);\n")
+
+            string.append("@bottom-left {\n")
+            string.append("content: \"\(footer.copyright)\";\n")
+            string.append("}")
+
+            if let pageCounter = footer.pageCounter {
+                string.append("@bottom-right {\n")
+                string.append("content: \(pageCounter);\n")
+                string.append("}")
+            }
+
+            string.append("}")
+            return string
         }
     }
 }
@@ -57,6 +80,34 @@ public extension Report.PrintOptions {
 
         public static func custom(topBottom: Measurement<UnitLength>, leadingTrailing: Measurement<UnitLength>) -> PageMargins {
             PageMargins(verticalCentimetres: topBottom.converted(to: .centimeters).value, horizontalCentimetres: leadingTrailing.converted(to: .centimeters).value)
+        }
+    }
+}
+
+// MARK: - Header
+
+public extension Report.PrintOptions {
+    struct Header {
+        public init() {}
+    }
+}
+
+// MARK: - Footer
+
+public extension Report.PrintOptions {
+    struct Footer {
+        public enum PageCounter: String, CustomStringConvertible {
+            case current = "counter(page)"
+            case currentAndTotal = #""Page " counter(page) " / " counter(pages)"#
+            public var description: String { rawValue }
+        }
+
+        public let pageCounter: PageCounter?
+        public let copyright: String
+
+        public init(pageCounter: PageCounter? = .currentAndTotal, copyright: String) {
+            self.pageCounter = pageCounter
+            self.copyright = copyright
         }
     }
 }

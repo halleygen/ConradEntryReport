@@ -39,10 +39,6 @@ public final class Report {
 // MARK: - Functions
 
 public extension Report {
-    private var allStyleClasses: [StyleClass] {
-        styleClasses + CollectionOfOne(StyleClass(printOptions: printOptions))
-    }
-
     func generateHTML(context existingContext: Context? = nil) throws -> String {
         let context = existingContext ?? Context(template: .reportTemplate, localTimeZone: timeZone, calendarID: calendarID, locale: locale)
         self.context = context
@@ -53,10 +49,8 @@ public extension Report {
         } else {
             head = try context.template.appendElement(.head)
         }
-        let titleElement = try head.appendElement(.title)
-        try titleElement.text(title)
-        let styleElement = try head.appendElement(.style)
-        try styleElement.html(allStyleClasses.serialised())
+        try generateMetaTags(in: head)
+        try generateStyleElement(in: head)
 
         let body: HTMLElement
         if let existing = context.template.body() {
@@ -81,5 +75,27 @@ public extension Report {
         let html = try generateHTML(context: existingContext)
         try Data(html.utf8).write(to: destination, options: .atomic)
         return destination
+    }
+
+    private func generateStyleElement(in head: HTMLElement) throws {
+        assert(head.tagName() == "head")
+        let printOptionsStyles = printOptions.serialised()
+        let otherStyles = styleClasses.serialised()
+
+        let styleElement = try head.appendElement(.style)
+        try styleElement.html("\(printOptionsStyles)\n\(otherStyles)")
+    }
+
+    private func generateMetaTags(in head: HTMLElement) throws {
+        assert(head.tagName() == "head")
+
+        for (key, value) in ["title": title, "author": "Conrad Partners", "subject": "WSMD Report", "date": ISO8601DateFormatter.string(from: Date(), timeZone: .current, formatOptions: [.withDay, .withMonth, .withYear, .withDashSeparatorInDate])] {
+            let meta = try head.appendElement(.meta)
+            try meta.attr("name", key)
+            try meta.attr("content", value)
+        }
+
+        let titleElement = try head.appendElement(.title)
+        try titleElement.text(title)
     }
 }

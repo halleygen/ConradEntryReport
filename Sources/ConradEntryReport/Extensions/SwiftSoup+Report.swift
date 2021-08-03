@@ -13,7 +13,7 @@ public typealias HTMLTag = SwiftSoup.Tag
 
 extension HTMLDocument {
     static var reportTemplate: HTMLDocument {
-        try! SwiftSoup.parse("<!DOCTYPE html><html></html>")
+        try! SwiftSoup.parse("<!DOCTYPE html><html lang=\"en\"></html>")
     }
 }
 
@@ -26,6 +26,7 @@ extension HTMLElement {
 
 extension Tag {
     static var head: Tag { .init("head") }
+    static var meta: Tag { .init("meta") }
     static var body: Tag { .init("body") }
     static var title: Tag { .init("title") }
     static var style: Tag { .init("style") }

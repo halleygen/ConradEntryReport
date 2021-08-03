@@ -12,13 +12,6 @@ public struct StyleClass {
         self.rules = rules
     }
 
-    init(printOptions options: Report.PrintOptions) {
-        self.init(selector: "@page", rules: [
-            "size": "\(options.pageSize) \(options.pageOrientation)",
-            "margin": "\(options.pageMargins)"
-        ])
-    }
-
     func serialised() -> String {
         var string = "\(selector) {\n"
         for (rule, value) in rules {
