@@ -8,16 +8,18 @@ import Foundation
 // MARK: Figure
 
 public struct Figure {
-    public var source: URL
-    public var altText: String?
+    public var image: Image
     public var timestamp: Date?
     public var comment: String?
 
-    public init(source: URL, altText: String?, timestamp: Date?, comment: String?) {
-        self.source = source
-        self.altText = altText ?? comment
+    public init(image: Image, timestamp: Date? = nil, comment: String? = nil) {
+        self.image = image
         self.timestamp = timestamp
         self.comment = comment
+    }
+
+    public init(source: URL, altText: String? = nil, timestamp: Date? = nil, comment: String? = nil) {
+        self.init(image: Image(source: source, altText: altText ?? comment), timestamp: timestamp, comment: comment)
     }
 }
 
@@ -27,12 +29,8 @@ extension Figure: HTMLComponent {
     public func htmlNode(context: Report.Context) throws -> HTMLNode {
         let figureElement = HTMLElement(.figure, "")
 
-        let imgElement = try figureElement.appendElement(.image)
-        try imgElement.attr("src", source.absoluteString)
-
-        if let altText = altText {
-            try imgElement.attr("alt", altText)
-        }
+        let imgElement = try image.htmlNode(context: context)
+        try figureElement.appendChild(imgElement)
 
         switch (timestamp, comment) {
         case let (.some(timestamp), .some(comment)):

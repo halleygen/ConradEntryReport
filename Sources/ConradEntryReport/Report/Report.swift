@@ -59,6 +59,8 @@ public extension Report {
             body = try context.template.appendElement(.body)
         }
 
+        try generateLogoElement(in: body, context: context)
+
         let titlePageElement = try titlePage.htmlNode(context: context)
         try body.appendChild(titlePageElement)
 
@@ -97,5 +99,10 @@ public extension Report {
 
         let titleElement = try head.appendElement(.title)
         try titleElement.text(title)
+    }
+
+    private func generateLogoElement(in body: HTMLElement, context: Context) throws {
+        let logoElement = try printOptions.header.logo.htmlNode(context: context)
+        try body.appendChild(logoElement)
     }
 }

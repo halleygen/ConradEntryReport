@@ -13,7 +13,7 @@ public extension Report {
         public let header: Header
         public let footer: Footer
 
-        public init(pageSize: PageSize = .a4, pageOrientation: PageOrientation = .portrait, pageMargins: PageMargins = .default, header: Header = Header(), footer: Footer = Footer(pageCounter: .currentAndTotal, copyright: "© Conrad Partners Ltd.")) {
+        public init(pageSize: PageSize = .a4, pageOrientation: PageOrientation = .portrait, pageMargins: PageMargins = .default, header: Header = Header(logoName: "Conrad Partners"), footer: Footer = Footer(pageCounter: .currentAndTotal, copyright: "© Conrad Partners Ltd.")) {
             self.pageSize = pageSize
             self.pageMargins = pageMargins
             self.pageOrientation = pageOrientation
@@ -25,6 +25,11 @@ public extension Report {
             var string = "@page {"
             string.append("size: \(pageSize) \(pageOrientation);\n")
             string.append("margin: \(pageMargins);\n")
+
+            string.append("@top-left { content: element(logo); }")
+            if header.showsSectionTitles {
+                string.append("@top-right { content: string(section-title); }")
+            }
 
             string.append("@bottom-left {\n")
             string.append("content: \"\(footer.copyright)\";\n")
@@ -88,7 +93,15 @@ public extension Report.PrintOptions {
 
 public extension Report.PrintOptions {
     struct Header {
-        public init() {}
+        public static let defaultLogoURL = URL(fileURLWithPath: "/logo.svg")
+
+        public var showsSectionTitles: Bool
+        public var logo: Logo
+
+        public init(logoURL: URL = defaultLogoURL, logoName: String, showsSectionTitles: Bool = true) {
+            self.logo = Logo(logoURL: logoURL, text: logoName)
+            self.showsSectionTitles = showsSectionTitles
+        }
     }
 }
 
