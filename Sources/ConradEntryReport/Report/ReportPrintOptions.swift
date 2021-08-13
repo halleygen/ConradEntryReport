@@ -93,7 +93,7 @@ public extension Report.PrintOptions {
 
 public extension Report.PrintOptions {
     struct Header {
-        public static let defaultLogoURL = URL(fileURLWithPath: "/logo.svg")
+        public static let defaultLogoURL = URL(string: "logo.png")!
 
         public var showsSectionTitles: Bool
         public var logo: Logo
