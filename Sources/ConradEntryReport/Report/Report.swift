@@ -91,7 +91,15 @@ public extension Report {
     private func generateMetaTags(in head: HTMLElement) throws {
         assert(head.tagName() == "head")
 
-        for (key, value) in ["title": title, "author": "Conrad Partners", "subject": "WSMD Report", "date": ISO8601DateFormatter.string(from: Date(), timeZone: .current, formatOptions: [.withDay, .withMonth, .withYear, .withDashSeparatorInDate])] {
+        let tags = [
+            "title": title,
+            "author": "Conrad Partners",
+            "subject": "WSMD Report",
+            "date": ISO8601DateFormatter.string(from: Date(), timeZone: .current, formatOptions: [.withDay, .withMonth, .withYear, .withDashSeparatorInDate]),
+            "charset": "utf-8"
+        ]
+
+        for (key, value) in tags {
             let meta = try head.appendElement(.meta)
             try meta.attr("name", key)
             try meta.attr("content", value)
