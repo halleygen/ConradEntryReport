@@ -95,8 +95,7 @@ public extension Report {
             "title": title,
             "author": "Conrad Partners",
             "subject": "WSMD Report",
-            "date": ISO8601DateFormatter.string(from: Date(), timeZone: .current, formatOptions: [.withDay, .withMonth, .withYear, .withDashSeparatorInDate]),
-            "charset": "utf-8"
+            "date": ISO8601DateFormatter.string(from: Date(), timeZone: .current, formatOptions: [.withDay, .withMonth, .withYear, .withDashSeparatorInDate])
         ]
 
         for (key, value) in tags {
@@ -104,6 +103,9 @@ public extension Report {
             try meta.attr("name", key)
             try meta.attr("content", value)
         }
+
+        let charset = try head.appendElement(.meta)
+        try charset.attr("charset", "utf-8")
 
         let titleElement = try head.appendElement(.title)
         try titleElement.text(title)
