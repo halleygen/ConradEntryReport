@@ -3,57 +3,32 @@
 // Copyright © 2021 Jesse Halley. All rights reserved.
 //
 
-public struct TitlePage {
-    public var heading: DocumentHeading
-    public var vesselPhoto: Figure
-    public var components: ContiguousArray<(String, HTMLTextConvertible)>
+import Foundation
+import Plot
 
-    public init(heading: DocumentHeading, vesselPhoto: Figure, components: ContiguousArray<(String, HTMLTextConvertible)>) {
-        self.heading = heading
-        self.components = components
+public struct TitlePage: Component {
+    public let title: String
+    public let vesselPhoto: Figure
+    public let components: KeyValuePairs<String, HTMLTextConvertible>
+
+    @EnvironmentValue(.context) private var context
+
+    public init(title: String, vesselPhoto: Figure, components: KeyValuePairs<String, HTMLTextConvertible>) {
+        self.title = title
         self.vesselPhoto = vesselPhoto
+        self.components = components
     }
 
-    @_disfavoredOverload
-    public init(heading: DocumentHeading, vesselPhoto: Figure, components: ContiguousArray<(String, HTMLTextConvertible?)>) {
-        let compacted = components.compactMap { title, component -> (String, HTMLTextConvertible)? in
-            guard let component = component else { return nil }
-            return (title, component)
-        }
+    public var body: Component {
+        Element(name: "section") {
+            H1(title)
 
-        self.init(heading: heading, vesselPhoto: vesselPhoto, components: ContiguousArray(compacted))
-    }
-}
+            for (name, value) in components {
+                Text("\(name): \(value.htmlString(context: context!))")
+                    .bold()
+            }
 
-extension TitlePage: HTMLComponent {
-    public func htmlNode(context: Report.Context) throws -> HTMLNode {
-        let sectionElement = HTMLElement(.section, "")
-
-        let headingElement = try heading.htmlNode(context: context)
-        try sectionElement.appendChild(headingElement)
-
-        for (title, value) in components {
-            let keyValuePair = Strong { KeyValuePair(key: title, value: value) }
-            let content = try keyValuePair.htmlNode(context: context)
-            try sectionElement.appendChild(content)
-            _ = try sectionElement.appendElement(.lineBreak)
-        }
-
-        let vesselPhotoElement = try vesselPhoto.htmlNode(context: context)
-        try sectionElement.appendChild(vesselPhotoElement)
-
-        return sectionElement
-    }
-}
-
-private extension TitlePage {
-    struct KeyValuePair: HTMLComponent {
-        let key: HTMLTextConvertible
-        let value: HTMLTextConvertible
-
-        func htmlNode(context: Report.Context) throws -> HTMLNode {
-            let text = Text(key.htmlString(context: context) + ": " + value.htmlString(context: context))
-            return try text.htmlNode(context: context)
+            vesselPhoto
         }
     }
 }

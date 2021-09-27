@@ -4,7 +4,8 @@
 //
 
 import Foundation
+import Plot
 
-public protocol HTMLComponent {
-    func htmlNode(context: Report.Context) throws -> HTMLNode
+extension EnvironmentKey where Value == Context? {
+    static var context: Self { Self() }
 }

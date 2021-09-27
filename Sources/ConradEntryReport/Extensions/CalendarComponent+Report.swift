@@ -40,5 +40,3 @@ extension Calendar.Component {
         return components
     }
 }
-
-extension NSCalendar.Unit: Hashable {}

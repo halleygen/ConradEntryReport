@@ -5,7 +5,7 @@
 
 import Foundation
 
-#if os(Linux)
+#if !os(macOS)
     public enum LinuxDateComponentsFormatter {
         public static func localizedString(from dateComponents: DateComponents) -> String? {
             func appendToString(_ string: inout String, value: Int?, symbol: (singular: String, plural: String)) {

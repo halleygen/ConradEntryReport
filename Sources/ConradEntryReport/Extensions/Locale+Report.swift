@@ -6,5 +6,5 @@
 import Foundation
 
 public extension Locale {
-    static let posix = Locale(identifier: "en_US_POSIX")
+    static var posix: Locale { Locale(identifier: "en_US_POSIX") }
 }

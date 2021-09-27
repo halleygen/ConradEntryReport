@@ -1,4 +1,4 @@
-// swift-tools-version:5.4
+// swift-tools-version:5.5
 
 import PackageDescription
 
@@ -14,14 +14,14 @@ let package = Package(
         )
     ],
     dependencies: [
-        .package(url: "https://github.com/scinfu/SwiftSoup", .upToNextMajor(from: "2.3.2"))
+        .package(url: "https://github.com/JohnSundell/Plot", .upToNextMajor(from: "0.10.0"))
     ],
     targets: [
         // Targets are the basic building blocks of a package. A target can define a module or a test suite.
         // Targets can depend on other targets in this package, and on products in packages this package depends on.
         .target(
             name: "ConradEntryReport",
-            dependencies: ["SwiftSoup"]
+            dependencies: ["Plot"]
         ),
         .testTarget(
             name: "ConradEntryReportTests",

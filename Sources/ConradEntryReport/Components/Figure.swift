@@ -4,51 +4,40 @@
 //
 
 import Foundation
+import Plot
 
-// MARK: Figure
+public struct Figure: Component {
+    public let image: Image
+    public let timeStamp: Date?
+    public let comment: String?
 
-public struct Figure {
-    public var image: Image
-    public var timestamp: Date?
-    public var comment: String?
+    @EnvironmentValue(.context) private var context
 
-    public init(image: Image, timestamp: Date? = nil, comment: String? = nil) {
+    public init(image: Image, timeStamp: Date?, comment: String?) {
         self.image = image
-        self.timestamp = timestamp
+        self.timeStamp = timeStamp
         self.comment = comment
     }
 
-    public init(source: URL, altText: String? = nil, timestamp: Date? = nil, comment: String? = nil) {
-        self.init(image: Image(source: source, altText: altText ?? comment), timestamp: timestamp, comment: comment)
-    }
-}
+    public var body: Component {
+        Element(name: "figure") {
+            image
 
-// MARK: - HTMLComponent
+            Element(name: "figcaption") {
+                switch (timeStamp, comment) {
+                case let (.some(timestamp), .some(comment)):
+                    Text("\(comment) \(context!.localizedString(for: timestamp))")
 
-extension Figure: HTMLComponent {
-    public func htmlNode(context: Report.Context) throws -> HTMLNode {
-        let figureElement = HTMLElement(.figure, "")
+                case let (.some(timestamp), .none):
+                    Text(context!.localizedString(for: timestamp))
 
-        let imgElement = try image.htmlNode(context: context)
-        try figureElement.appendChild(imgElement)
+                case let (.none, .some(comment)):
+                    Text(comment)
 
-        switch (timestamp, comment) {
-        case let (.some(timestamp), .some(comment)):
-            let caption = try figureElement.appendElement(.figureCaption)
-            try caption.text("\(comment) (\(context.localizedString(for: timestamp)))")
-
-        case let (.some(timestamp), .none):
-            let caption = try figureElement.appendElement(.figureCaption)
-            try caption.text(context.localizedString(for: timestamp))
-
-        case let (.none, .some(comment)):
-            let caption = try figureElement.appendElement(.figureCaption)
-            try caption.text(comment)
-
-        case (.none, .none):
-            break
+                case (.none, .none):
+                    EmptyComponent()
+                }
+            }
         }
-
-        return figureElement
     }
 }

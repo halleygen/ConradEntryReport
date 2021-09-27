@@ -4,29 +4,34 @@
 //
 
 import Foundation
+import Plot
 
-public struct Logo: HTMLComponent {
-    let image: Image
-    let text: Text?
+public struct Logo: Component {
+    public var url: URL
+    public var text: String?
 
-    public init(logoURL: URL, text: String?) {
-        self.image = Image(source: logoURL, sourceEncodingStrategy: .absoluteURL, altText: "Logo")
-        self.text = text.map(Text.init(_:))
+    public init(url: URL, text: String? = nil) {
+        self.url = url
+        self.text = text
     }
 
-    public func htmlNode(context: Report.Context) throws -> HTMLNode {
-        let imageNode = try image.htmlNode(context: context)
-        try imageNode.attr("style", "height: 2.5em; width: 2.5em")
-
-        guard let textNode = try text?.htmlNode(context: context) else {
-            return imageNode
+    @ComponentBuilder
+    public var body: Component {
+        if let text = text {
+            Div {
+                image
+                Text(text)
+            }
+            .style("display: flex")
+            .class("logo")
+        } else {
+            image
+                .class("logo")
         }
+    }
 
-        let wrapper = HTMLElement(.division, "")
-        try wrapper.addClass("logo")
-        try wrapper.attr("style", "display: flex;")
-        try wrapper.appendChild(imageNode)
-        try wrapper.appendChild(textNode)
-        return wrapper
+    private var image: Component {
+        Image(url: url, description: "logo")
+            .style("height: 2.5em; width: 2.5em")
     }
 }

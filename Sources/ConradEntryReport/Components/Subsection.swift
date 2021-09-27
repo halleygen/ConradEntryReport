@@ -3,38 +3,22 @@
 // Copyright © 2021 Jesse Halley. All rights reserved.
 //
 
-public struct Subsection {
-    public var heading: SubsectionHeading
-    public var components: ContiguousArray<HTMLComponent>
+import Foundation
+import Plot
 
-    public init(heading: SubsectionHeading, @HTMLComponentArrayBuilder components: () -> ContiguousArray<HTMLComponent>) {
-        self.init(heading: heading, components: components())
+public struct Subsection<Content: Component>: Component {
+    public let title: String
+    @ComponentBuilder public let content: () -> Content
+
+    public init(title: String, @ComponentBuilder content: @escaping () -> Content) {
+        self.title = title
+        self.content = content
     }
 
-    public init(heading: SubsectionHeading, components: ContiguousArray<HTMLComponent>) {
-        self.heading = heading
-        self.components = components
-    }
-
-    @_disfavoredOverload
-    public init(heading: SubsectionHeading, components: ContiguousArray<HTMLComponent?>) {
-        self.init(heading: heading, components: ContiguousArray(components.compacting()))
-    }
-}
-
-extension Subsection: HTMLComponent {
-    public func htmlNode(context: Report.Context) throws -> HTMLNode {
-        let sectionElement = HTMLElement(.division, "")
-
-        let headingElement = try heading.htmlNode(context: context)
-        try sectionElement.appendChild(headingElement)
-
-        for component in components {
-            let componentWrapper = try sectionElement.appendElement(.division)
-            let componentContent = try component.htmlNode(context: context)
-            try componentWrapper.appendChild(componentContent)
+    public var body: Component {
+        Div {
+            H3(title)
+            content()
         }
-
-        return sectionElement
     }
 }

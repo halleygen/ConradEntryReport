@@ -2,12 +2,12 @@
   "object": {
     "pins": [
       {
-        "package": "SwiftSoup",
-        "repositoryURL": "https://github.com/scinfu/SwiftSoup",
+        "package": "Plot",
+        "repositoryURL": "https://github.com/JohnSundell/Plot",
         "state": {
           "branch": null,
-          "revision": "774dc9c7213085db8aa59595e27c1cd22e428904",
-          "version": "2.3.2"
+          "revision": "c27f6857deeb4c4623db294172a8ec572790a9be",
+          "version": "0.10.0"
         }
       }
     ]

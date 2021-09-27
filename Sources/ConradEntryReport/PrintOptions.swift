@@ -5,51 +5,49 @@
 
 import Foundation
 
-public extension Report {
-    struct PrintOptions {
-        public let pageSize: PageSize
-        public let pageOrientation: PageOrientation
-        public let pageMargins: PageMargins
-        public let header: Header
-        public let footer: Footer
+public struct PrintOptions {
+    public let pageSize: PageSize
+    public let pageOrientation: PageOrientation
+    public let pageMargins: PageMargins
+    public let header: Header
+    public let footer: Footer
 
-        public init(pageSize: PageSize = .a4, pageOrientation: PageOrientation = .portrait, pageMargins: PageMargins = .default, header: Header = Header(logoName: "Conrad Partners"), footer: Footer = Footer(pageCounter: .currentAndTotal, copyright: "© Conrad Partners Ltd.")) {
-            self.pageSize = pageSize
-            self.pageMargins = pageMargins
-            self.pageOrientation = pageOrientation
-            self.header = header
-            self.footer = footer
+    public init(pageSize: PageSize = .a4, pageOrientation: PageOrientation = .portrait, pageMargins: PageMargins = .default, header: Header = Header(logoName: "Conrad Partners"), footer: Footer = Footer(pageCounter: .currentAndTotal, copyright: "© Conrad Partners Ltd.")) {
+        self.pageSize = pageSize
+        self.pageMargins = pageMargins
+        self.pageOrientation = pageOrientation
+        self.header = header
+        self.footer = footer
+    }
+
+    func serialised() -> String {
+        var string = "@page {"
+        string.append("size: \(pageSize) \(pageOrientation);\n")
+        string.append("margin: \(pageMargins);\n")
+
+        string.append("@top-left { content: element(logo); }")
+        if header.showsSectionTitles {
+            string.append("@top-right { content: string(section-title); }")
         }
 
-        func serialised() -> String {
-            var string = "@page {"
-            string.append("size: \(pageSize) \(pageOrientation);\n")
-            string.append("margin: \(pageMargins);\n")
+        string.append("@bottom-left {\n")
+        string.append("content: \"\(footer.copyright)\";\n")
+        string.append("}")
 
-            string.append("@top-left { content: element(logo); }")
-            if header.showsSectionTitles {
-                string.append("@top-right { content: string(section-title); }")
-            }
-
-            string.append("@bottom-left {\n")
-            string.append("content: \"\(footer.copyright)\";\n")
+        if let pageCounter = footer.pageCounter {
+            string.append("@bottom-right {\n")
+            string.append("content: \(pageCounter);\n")
             string.append("}")
-
-            if let pageCounter = footer.pageCounter {
-                string.append("@bottom-right {\n")
-                string.append("content: \(pageCounter);\n")
-                string.append("}")
-            }
-
-            string.append("}")
-            return string
         }
+
+        string.append("}")
+        return string
     }
 }
 
 // MARK: - Page Styles
 
-public extension Report.PrintOptions {
+public extension PrintOptions {
     struct PageSize: CustomStringConvertible {
         public let description: String
 
@@ -91,7 +89,7 @@ public extension Report.PrintOptions {
 
 // MARK: - Header
 
-public extension Report.PrintOptions {
+public extension PrintOptions {
     struct Header {
         public static let defaultLogoURL = URL(string: "logo.png")!
 
@@ -99,7 +97,7 @@ public extension Report.PrintOptions {
         public var logo: Logo
 
         public init(logoURL: URL = defaultLogoURL, logoName: String, showsSectionTitles: Bool = true) {
-            self.logo = Logo(logoURL: logoURL, text: logoName)
+            self.logo = Logo(url: logoURL, text: logoName)
             self.showsSectionTitles = showsSectionTitles
         }
     }
@@ -107,7 +105,7 @@ public extension Report.PrintOptions {
 
 // MARK: - Footer
 
-public extension Report.PrintOptions {
+public extension PrintOptions {
     struct Footer {
         public enum PageCounter: String, CustomStringConvertible {
             case current = "counter(page)"
