@@ -24,7 +24,7 @@ extension HTMLDate: Comparable {
 }
 
 extension HTMLDate: HTMLTextConvertible {
-    public func htmlString(context: Report.Context) -> String {
+    public func htmlString(context: Context) -> String {
         context.localizedString(for: value, dateStyle: dateStyle, timeStyle: timeStyle)
     }
 }
