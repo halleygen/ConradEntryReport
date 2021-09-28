@@ -5,14 +5,14 @@
 
 import Foundation
 
-public struct PrintOptions {
+public struct PrintOptions: Codable {
     public let pageSize: PageSize
     public let pageOrientation: PageOrientation
     public let pageMargins: PageMargins
     public let header: Header
     public let footer: Footer
 
-    public init(pageSize: PageSize = .a4, pageOrientation: PageOrientation = .portrait, pageMargins: PageMargins = .default, header: Header = Header(logoName: "Conrad Partners"), footer: Footer = Footer(pageCounter: .currentAndTotal, copyright: "© Conrad Partners Ltd.")) {
+    public init(pageSize: PageSize = .a4, pageOrientation: PageOrientation = .portrait, pageMargins: PageMargins = .default, header: Header = Header(logoTitle: "Conrad Partners"), footer: Footer = Footer(pageCounter: .currentAndTotal, copyright: "© Conrad Partners Ltd.")) {
         self.pageSize = pageSize
         self.pageMargins = pageMargins
         self.pageOrientation = pageOrientation
@@ -48,7 +48,7 @@ public struct PrintOptions {
 // MARK: - Page Styles
 
 public extension PrintOptions {
-    struct PageSize: CustomStringConvertible {
+    struct PageSize: CustomStringConvertible, Codable {
         public let description: String
 
         init(_ description: String) {
@@ -67,12 +67,12 @@ public extension PrintOptions {
         }
     }
 
-    enum PageOrientation: String, CustomStringConvertible {
+    enum PageOrientation: String, CustomStringConvertible, Codable {
         case portrait, landscape
         public var description: String { rawValue }
     }
 
-    struct PageMargins: CustomStringConvertible {
+    struct PageMargins: CustomStringConvertible, Codable {
         let verticalCentimetres: Double
         let horizontalCentimetres: Double
 
@@ -90,14 +90,18 @@ public extension PrintOptions {
 // MARK: - Header
 
 public extension PrintOptions {
-    struct Header {
+    struct Header: Codable {
         public static let defaultLogoURL = URL(string: "logo.png")!
 
         public var showsSectionTitles: Bool
-        public var logo: Logo
+        public var logoURL: URL
+        public var logoTitle: String
 
-        public init(logoURL: URL = defaultLogoURL, logoName: String, showsSectionTitles: Bool = true) {
-            self.logo = Logo(url: logoURL, text: logoName)
+        public var logo: Logo { Logo(url: logoURL, text: logoTitle) }
+
+        public init(logoURL: URL = defaultLogoURL, logoTitle: String, showsSectionTitles: Bool = true) {
+            self.logoURL = logoURL
+            self.logoTitle = logoTitle
             self.showsSectionTitles = showsSectionTitles
         }
     }
@@ -106,8 +110,8 @@ public extension PrintOptions {
 // MARK: - Footer
 
 public extension PrintOptions {
-    struct Footer {
-        public enum PageCounter: String, CustomStringConvertible {
+    struct Footer: Codable {
+        public enum PageCounter: String, CustomStringConvertible, Codable {
             case current = "counter(page)"
             case currentAndTotal = #""Page " counter(page) " / " counter(pages)"#
             public var description: String { rawValue }
