@@ -20,7 +20,7 @@ public struct HTMLDuration {
 }
 
 extension HTMLDuration: HTMLTextConvertible {
-    public func htmlString(context: Context) -> String {
+    public func htmlString(context: Report.RenderContext) -> String {
         context.localizedString(forDurationIn: interval, allowedUnits: allowedUnits)
     }
 }

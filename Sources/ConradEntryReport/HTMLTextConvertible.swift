@@ -9,7 +9,7 @@ import Foundation
 
 public protocol HTMLTextConvertible {
     static var nilString: String { get }
-    func htmlString(context: Context) -> String
+    func htmlString(context: Report.RenderContext) -> String
 }
 
 public extension HTMLTextConvertible {
@@ -21,7 +21,7 @@ public extension HTMLTextConvertible {
 // MARK: Bool
 
 extension Bool: HTMLTextConvertible {
-    public func htmlString(context: Context) -> String {
+    public func htmlString(context: Report.RenderContext) -> String {
         self ? "Yes" : "No"
     }
 }
@@ -29,13 +29,13 @@ extension Bool: HTMLTextConvertible {
 // MARK: String
 
 extension String: HTMLTextConvertible {
-    public func htmlString(context: Context) -> String { self }
+    public func htmlString(context: Report.RenderContext) -> String { self }
 }
 
 // MARK: Integers
 
 public extension HTMLTextConvertible where Self: BinaryInteger {
-    func htmlString(context: Context) -> String {
+    func htmlString(context: Report.RenderContext) -> String {
         context.localizedString(for: self)
     }
 }
@@ -46,7 +46,7 @@ extension Int64: HTMLTextConvertible {}
 // MARK: Floating Points
 
 public extension HTMLTextConvertible where Self: BinaryFloatingPoint {
-    func htmlString(context: Context) -> String {
+    func htmlString(context: Report.RenderContext) -> String {
         context.localizedString(for: self)
     }
 }
@@ -57,19 +57,19 @@ extension Float: HTMLTextConvertible {}
 // MARK: Collections
 
 extension Array: HTMLTextConvertible where Element: HTMLTextConvertible {
-    public func htmlString(context: ConradEntryReport.Context) -> String {
+    public func htmlString(context: ConradEntryReport.Report.RenderContext) -> String {
         context.localizedString(for: map { $0.htmlString(context: context) })
     }
 }
 
 public extension Collection where Element: HTMLTextConvertible {
-    func htmlString(context: Context) -> String {
+    func htmlString(context: Report.RenderContext) -> String {
         map { $0.htmlString(context: context) }.htmlString(context: context)
     }
 }
 
 public extension Collection where Element: HTMLTextConvertible & Comparable {
-    func htmlString(context: Context) -> String {
+    func htmlString(context: Report.RenderContext) -> String {
         sorted().htmlString(context: context)
     }
 }
@@ -80,7 +80,7 @@ extension ContiguousArray: HTMLTextConvertible where Element: HTMLTextConvertibl
 // MARK: Measurement
 
 extension Measurement: HTMLTextConvertible {
-    public func htmlString(context: Context) -> String {
+    public func htmlString(context: Report.RenderContext) -> String {
         context.localizedString(for: self)
     }
 }

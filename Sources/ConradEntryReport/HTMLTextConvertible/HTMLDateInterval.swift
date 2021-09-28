@@ -24,7 +24,7 @@ public extension HTMLDateInterval {
 }
 
 extension HTMLDateInterval: HTMLTextConvertible {
-    public func htmlString(context: Context) -> String {
+    public func htmlString(context: Report.RenderContext) -> String {
         context.localizedString(for: interval, dateStyle: dateStyle, timeStyle: timeStyle)
     }
 }

@@ -26,7 +26,7 @@ public struct HTMLNumber {
 }
 
 extension HTMLNumber: HTMLTextConvertible {
-    public func htmlString(context: Context) -> String {
+    public func htmlString(context: Report.RenderContext) -> String {
         context.localizedString(for: number, style: style)
     }
 }

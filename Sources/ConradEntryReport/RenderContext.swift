@@ -5,35 +5,37 @@
 
 import Foundation
 
-public final class Context {
-    public let locale: Locale
-    public let localTimeZone: TimeZone
-    public let calendar: Calendar
+public extension Report {
+    final class RenderContext {
+        public let locale: Locale
+        public let localTimeZone: TimeZone
+        public let calendar: Calendar
 
-    private var numberFormatterCache: [NumberFormatter.Style: NumberFormatter] = [:]
-    private var dateFormatterCache: [DateTimeStyle: DateFormatter] = [:]
-    private var dateIntervalFormatterCache: [DateTimeStyle: DateIntervalFormatter] = [:]
+        private var numberFormatterCache: [NumberFormatter.Style: NumberFormatter] = [:]
+        private var dateFormatterCache: [DateTimeStyle: DateFormatter] = [:]
+        private var dateIntervalFormatterCache: [DateTimeStyle: DateIntervalFormatter] = [:]
 
-    #if os(macOS)
-        private var dateComponentsFormatterCache: [NSCalendar.Unit: DateComponentsFormatter] = [:]
-        private lazy var measurementFormatter: MeasurementFormatter = makeMeasurementFormatter()
-        private lazy var listFormatter: ListFormatter = makeListFormatter()
-    #endif
+        #if os(macOS)
+            private var dateComponentsFormatterCache: [NSCalendar.Unit: DateComponentsFormatter] = [:]
+            private lazy var measurementFormatter: MeasurementFormatter = makeMeasurementFormatter()
+            private lazy var listFormatter: ListFormatter = makeListFormatter()
+        #endif
 
-    init(localTimeZone: TimeZone, calendarID: Calendar.Identifier, locale: Locale) {
-        self.localTimeZone = localTimeZone
-        self.locale = locale
+        init(localTimeZone: TimeZone, calendarID: Calendar.Identifier, locale: Locale) {
+            self.localTimeZone = localTimeZone
+            self.locale = locale
 
-        var calendar = Calendar(identifier: calendarID)
-        calendar.timeZone = localTimeZone
-        calendar.locale = locale
-        self.calendar = calendar
+            var calendar = Calendar(identifier: calendarID)
+            calendar.timeZone = localTimeZone
+            calendar.locale = locale
+            self.calendar = calendar
+        }
     }
 }
 
 // MARK: - Number Formatting
 
-public extension Context {
+public extension Report.RenderContext {
     func localizedString<T: BinaryInteger>(for value: T) -> String {
         let number = Int64(exactly: value)! as NSNumber
         return localizedString(for: number, style: .none)
@@ -57,7 +59,7 @@ public extension Context {
 
 // MARK: - Date Formatting
 
-public extension Context {
+public extension Report.RenderContext {
     func localizedString(for date: Date, dateStyle: DateFormatter.Style = .medium, timeStyle: DateFormatter.Style = .short) -> String {
         let style = DateTimeStyle(dateStyle: dateStyle, timeStyle: timeStyle)
         if let formatter = dateFormatterCache[style] {
@@ -101,7 +103,7 @@ public extension Context {
 
 // MARK: - Measurement Formatting
 
-public extension Context {
+public extension Report.RenderContext {
     func localizedString<UnitType: Unit>(for measurement: Measurement<UnitType>) -> String {
         #if os(macOS)
             return measurementFormatter.string(from: measurement)
@@ -121,7 +123,7 @@ public extension Context {
 
 // MARK: - List Formatting
 
-public extension Context {
+public extension Report.RenderContext {
     func localizedString(for items: [String]) -> String {
         #if os(macOS)
             return listFormatter.string(from: items) ?? ""
@@ -138,7 +140,7 @@ private struct DateTimeStyle: Hashable {
     let timeStyle: DateFormatter.Style
 }
 
-private extension Context {
+private extension Report.RenderContext {
     func makeNumberFormatter(style: NumberFormatter.Style) -> NumberFormatter {
         let formatter = NumberFormatter()
         formatter.numberStyle = style

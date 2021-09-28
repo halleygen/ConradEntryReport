@@ -6,6 +6,6 @@
 import Foundation
 import Plot
 
-extension EnvironmentKey where Value == Context? {
+extension EnvironmentKey where Value == Report.RenderContext? {
     static var context: Self { Self() }
 }

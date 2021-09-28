@@ -42,7 +42,7 @@ public struct Report {
                 .component(printOptions.header.logo)
             )
         )
-        .environmentValue(Context(localTimeZone: timeZone, calendarID: calendarID, locale: locale), key: .context)
+        .environmentValue(Report.RenderContext(localTimeZone: timeZone, calendarID: calendarID, locale: locale), key: .context)
     }
 
     public func render(printOptions: PrintOptions, minified: Bool = true) -> String { html(printOptions: printOptions).render(indentedBy: minified ? nil : .tabs(1)) }
