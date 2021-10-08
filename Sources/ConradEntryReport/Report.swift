@@ -11,16 +11,14 @@ public struct Report {
     public let titlePage: TitlePage
 
     public let locale: Locale
-    public let calendarID: Calendar.Identifier
     public let timeZone: TimeZone
     @ComponentBuilder public let components: () -> Component
 
-    public init(title: String, titlePage: TitlePage, timeZone: TimeZone, calendarID: Calendar.Identifier? = nil, locale: Locale? = nil, @ComponentBuilder components: @escaping () -> Component) {
+    public init(title: String, titlePage: TitlePage, timeZone: TimeZone, locale: Locale, @ComponentBuilder components: @escaping () -> Component) {
         self.title = title
         self.titlePage = titlePage
         self.timeZone = timeZone
-        self.calendarID = calendarID ?? .iso8601
-        self.locale = locale ?? .posix
+        self.locale = locale
         self.components = components
     }
 
@@ -42,7 +40,7 @@ public struct Report {
                 .component(printOptions.header.logo)
             )
         )
-        .environmentValue(Report.RenderContext(localTimeZone: timeZone, calendarID: calendarID, locale: locale), key: .context)
+        .environmentValue(Report.RenderContext(localTimeZone: timeZone, locale: locale), key: .context)
     }
 
     public func render(printOptions: PrintOptions, minified: Bool = true) -> String { html(printOptions: printOptions).render(indentedBy: minified ? nil : .tabs(1)) }

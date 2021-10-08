@@ -6,13 +6,13 @@
 import Foundation
 
 public struct PrintOptions: Codable {
-    public let pageSize: PageSize
-    public let pageOrientation: PageOrientation
-    public let pageMargins: PageMargins
-    public let header: Header
-    public let footer: Footer
+    public var pageSize: PageSize
+    public var pageOrientation: PageOrientation
+    public var pageMargins: PageMargins
+    public var header: Header
+    public var footer: Footer
 
-    public init(pageSize: PageSize = .a4, pageOrientation: PageOrientation = .portrait, pageMargins: PageMargins = .default, header: Header = Header(logoTitle: "Conrad Partners"), footer: Footer = Footer(pageCounter: .currentAndTotal, copyright: "© Conrad Partners Ltd.")) {
+    public init(pageSize: PageSize = .a4, pageOrientation: PageOrientation = .portrait, pageMargins: PageMargins = .default, header: Header = Header(logo: Logo(text: "Conrad Partners")), footer: Footer = Footer(pageCounter: .currentAndTotal, copyright: "© Conrad Partners Ltd.")) {
         self.pageSize = pageSize
         self.pageMargins = pageMargins
         self.pageOrientation = pageOrientation
@@ -91,17 +91,11 @@ public extension PrintOptions {
 
 public extension PrintOptions {
     struct Header: Codable {
-        public static let defaultLogoURL = URL(string: "logo.png")!
-
         public var showsSectionTitles: Bool
-        public var logoURL: URL
-        public var logoTitle: String
+        public var logo: Logo?
 
-        public var logo: Logo { Logo(url: logoURL, text: logoTitle) }
-
-        public init(logoURL: URL = defaultLogoURL, logoTitle: String, showsSectionTitles: Bool = true) {
-            self.logoURL = logoURL
-            self.logoTitle = logoTitle
+        public init(logo: Logo? = nil, showsSectionTitles: Bool = true) {
+            self.logo = logo
             self.showsSectionTitles = showsSectionTitles
         }
     }

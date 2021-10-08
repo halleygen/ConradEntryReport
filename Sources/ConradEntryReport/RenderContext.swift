@@ -9,7 +9,8 @@ public extension Report {
     final class RenderContext {
         public let locale: Locale
         public let localTimeZone: TimeZone
-        public let calendar: Calendar
+
+        public var calendar: Calendar { locale.calendar }
 
         private var numberFormatterCache: [NumberFormatter.Style: NumberFormatter] = [:]
         private var dateFormatterCache: [DateTimeStyle: DateFormatter] = [:]
@@ -21,14 +22,9 @@ public extension Report {
             private lazy var listFormatter: ListFormatter = makeListFormatter()
         #endif
 
-        init(localTimeZone: TimeZone, calendarID: Calendar.Identifier, locale: Locale) {
+        init(localTimeZone: TimeZone, locale: Locale) {
             self.localTimeZone = localTimeZone
             self.locale = locale
-
-            var calendar = Calendar(identifier: calendarID)
-            calendar.timeZone = localTimeZone
-            calendar.locale = locale
-            self.calendar = calendar
         }
     }
 }
