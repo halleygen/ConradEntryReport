@@ -27,7 +27,7 @@ public extension Table {
         )
     }
 
-    init(tableHeader header: (String, String)? = nil, tableFooter footer: (String, String)? = nil, caption: String? = nil, @SingleColumnWithHeaderTableRowBuilder rows: @escaping () -> [_TableRow]) {
+    init(tableHeader header: (String, String)? = nil, tableFooter footer: (String, String)? = nil, caption: String? = nil, @SingleColumnWithHeaderTableRowBuilder rowsWithHeader rows: @escaping () -> [_TableRow]) {
         self.init(header: header, footer: footer, caption: caption, rows: rows)
     }
 
@@ -54,7 +54,7 @@ public extension Table {
         )
     }
 
-    init(tableHeader header: (String, String, String)? = nil, tableFooter footer: (String, String, String)? = nil, caption: String? = nil, @DoubleColumnWithHeaderTableRowBuilder rows: @escaping () -> [_TableRow]) {
+    init(tableHeader header: (String, String, String)? = nil, tableFooter footer: (String, String, String)? = nil, caption: String? = nil, @DoubleColumnWithHeaderTableRowBuilder rowsWithHeader rows: @escaping () -> [_TableRow]) {
         self.init(header: header, footer: footer, caption: caption, rows: rows)
     }
 
@@ -83,7 +83,7 @@ public extension Table {
         )
     }
 
-    init(tableHeader header: (String, String, String, String)? = nil, tableFooter footer: (String, String, String, String)? = nil, caption: String? = nil, @TripleColumnWithHeaderTableRowBuilder rows: @escaping () -> [_TableRow]) {
+    init(tableHeader header: (String, String, String, String)? = nil, tableFooter footer: (String, String, String, String)? = nil, caption: String? = nil, @TripleColumnWithHeaderTableRowBuilder rowsWithHeader rows: @escaping () -> [_TableRow]) {
         self.init(header: header, footer: footer, caption: caption, rows: rows)
     }
 
@@ -114,7 +114,7 @@ public extension Table {
         )
     }
 
-    init(tableHeader header: (String, String, String, String, String)? = nil, tableFooter footer: (String, String, String, String, String)? = nil, caption: String? = nil, @QuadrupleColumnWithHeaderTableRowBuilder rows: @escaping () -> [_TableRow]) {
+    init(tableHeader header: (String, String, String, String, String)? = nil, tableFooter footer: (String, String, String, String, String)? = nil, caption: String? = nil, @QuadrupleColumnWithHeaderTableRowBuilder rowsWithHeader rows: @escaping () -> [_TableRow]) {
         self.init(header: header, footer: footer, caption: caption, rows: rows)
     }
 
@@ -147,7 +147,7 @@ public extension Table {
         )
     }
 
-    init(tableHeader header: (String, String, String, String, String, String)? = nil, tableFooter footer: (String, String, String, String, String, String)? = nil, caption: String? = nil, @QuintupleColumnWithHeaderTableRowBuilder rows: @escaping () -> [_TableRow]) {
+    init(tableHeader header: (String, String, String, String, String, String)? = nil, tableFooter footer: (String, String, String, String, String, String)? = nil, caption: String? = nil, @QuintupleColumnWithHeaderTableRowBuilder rowsWithHeader rows: @escaping () -> [_TableRow]) {
         self.init(
             caption: caption.map(TableCaption.init(_:)),
             header: header.map { h in
