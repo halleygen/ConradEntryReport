@@ -5,14 +5,10 @@
 
 import Plot
 
-public extension TableCell {
-    init<T: HTMLTextConvertible>(_ value: T) {
-        self.init(Value(value))
-    }
-}
-
 public extension Table {
-    init(header: String? = nil, footer: String? = nil, caption: String? = nil, @SingleColumnTableRowBuilder rows: @escaping () -> [TableRow]) {
+    // MARK: - Single
+
+    init(header: String? = nil, footer: String? = nil, caption: String? = nil, @SingleColumnTableRowBuilder rows: @escaping () -> [_TableRow]) {
         self.init(
             caption: caption.map(TableCaption.init(_:)),
             header: header.map { h in
@@ -31,7 +27,13 @@ public extension Table {
         )
     }
 
-    init(header: (String, String)? = nil, footer: (String, String)? = nil, caption: String? = nil, @DoubleColumnTableRowBuilder rows: @escaping () -> [TableRow]) {
+    init(tableHeader header: (String, String)? = nil, tableFooter footer: (String, String)? = nil, caption: String? = nil, @SingleColumnWithHeaderTableRowBuilder rows: @escaping () -> [_TableRow]) {
+        self.init(header: header, footer: footer, caption: caption, rows: rows)
+    }
+
+    // MARK: - Double
+
+    init(header: (String, String)? = nil, footer: (String, String)? = nil, caption: String? = nil, @DoubleColumnTableRowBuilder rows: @escaping () -> [_TableRow]) {
         self.init(
             caption: caption.map(TableCaption.init(_:)),
             header: header.map { h in
@@ -52,7 +54,13 @@ public extension Table {
         )
     }
 
-    init(header: (String, String, String)? = nil, footer: (String, String, String)? = nil, caption: String? = nil, @TripleColumnTableRowBuilder rows: @escaping () -> [TableRow]) {
+    init(tableHeader header: (String, String, String)? = nil, tableFooter footer: (String, String, String)? = nil, caption: String? = nil, @DoubleColumnWithHeaderTableRowBuilder rows: @escaping () -> [_TableRow]) {
+        self.init(header: header, footer: footer, caption: caption, rows: rows)
+    }
+
+    // MARK: - Triple
+
+    init(header: (String, String, String)? = nil, footer: (String, String, String)? = nil, caption: String? = nil, @TripleColumnTableRowBuilder rows: @escaping () -> [_TableRow]) {
         self.init(
             caption: caption.map(TableCaption.init(_:)),
             header: header.map { h in
@@ -75,7 +83,13 @@ public extension Table {
         )
     }
 
-    init(header: (String, String, String, String)? = nil, footer: (String, String, String, String)? = nil, caption: String? = nil, @QuadrupleColumnTableRowBuilder rows: @escaping () -> [TableRow]) {
+    init(tableHeader header: (String, String, String, String)? = nil, tableFooter footer: (String, String, String, String)? = nil, caption: String? = nil, @TripleColumnWithHeaderTableRowBuilder rows: @escaping () -> [_TableRow]) {
+        self.init(header: header, footer: footer, caption: caption, rows: rows)
+    }
+
+    // MARK: - Quadruple
+
+    init(header: (String, String, String, String)? = nil, footer: (String, String, String, String)? = nil, caption: String? = nil, @QuadrupleColumnTableRowBuilder rows: @escaping () -> [_TableRow]) {
         self.init(
             caption: caption.map(TableCaption.init(_:)),
             header: header.map { h in
@@ -100,7 +114,13 @@ public extension Table {
         )
     }
 
-    init(header: (String, String, String, String, String)? = nil, footer: (String, String, String, String, String)? = nil, caption: String? = nil, @QuintupleColumnTableRowBuilder rows: @escaping () -> [TableRow]) {
+    init(tableHeader header: (String, String, String, String, String)? = nil, tableFooter footer: (String, String, String, String, String)? = nil, caption: String? = nil, @QuadrupleColumnWithHeaderTableRowBuilder rows: @escaping () -> [_TableRow]) {
+        self.init(header: header, footer: footer, caption: caption, rows: rows)
+    }
+
+    // MARK: - Quintuple
+
+    init(header: (String, String, String, String, String)? = nil, footer: (String, String, String, String, String)? = nil, caption: String? = nil, @QuintupleColumnTableRowBuilder rows: @escaping () -> [_TableRow]) {
         self.init(
             caption: caption.map(TableCaption.init(_:)),
             header: header.map { h in
@@ -118,6 +138,35 @@ public extension Table {
                     Text(f.2)
                     Text(f.3)
                     Text(f.4)
+                }
+            }, rows: {
+                for row in rows() {
+                    row
+                }
+            }
+        )
+    }
+
+    init(tableHeader header: (String, String, String, String, String, String)? = nil, tableFooter footer: (String, String, String, String, String, String)? = nil, caption: String? = nil, @QuintupleColumnWithHeaderTableRowBuilder rows: @escaping () -> [_TableRow]) {
+        self.init(
+            caption: caption.map(TableCaption.init(_:)),
+            header: header.map { h in
+                TableRow {
+                    Text(h.0)
+                    Text(h.1)
+                    Text(h.2)
+                    Text(h.3)
+                    Text(h.4)
+                    Text(h.5)
+                }
+            }, footer: footer.map { f in
+                TableRow {
+                    Text(f.0)
+                    Text(f.1)
+                    Text(f.2)
+                    Text(f.3)
+                    Text(f.4)
+                    Text(f.5)
                 }
             }, rows: {
                 for row in rows() {
