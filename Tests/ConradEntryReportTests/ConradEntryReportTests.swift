@@ -40,6 +40,14 @@ final class ConradEntryReportTests: XCTestCase {
     }
 
     func test_tables() throws {
+        let _ = HTML {
+            Table {
+                (1, 2)
+                (1, 2)
+                (1, 2)
+            }
+        }
+        
         let str1 = HTML {
             Table(header: "header", footer: "footer", caption: "Single Caption") {
                 "Element"

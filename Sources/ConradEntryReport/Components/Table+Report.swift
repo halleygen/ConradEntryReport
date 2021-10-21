@@ -27,6 +27,7 @@ public extension Table {
         )
     }
 
+    @_disfavoredOverload
     init(tableHeader header: (String, String)? = nil, tableFooter footer: (String, String)? = nil, caption: String? = nil, @SingleColumnWithHeaderTableRowBuilder rowsWithHeader rows: @escaping () -> [_TableRow]) {
         self.init(header: header, footer: footer, caption: caption, rows: rows)
     }
