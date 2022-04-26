@@ -1,16 +1,14 @@
 {
-  "object": {
-    "pins": [
-      {
-        "package": "Plot",
-        "repositoryURL": "https://github.com/JohnSundell/Plot",
-        "state": {
-          "branch": null,
-          "revision": "c27f6857deeb4c4623db294172a8ec572790a9be",
-          "version": "0.10.0"
-        }
+  "pins" : [
+    {
+      "identity" : "plot",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/JohnSundell/Plot",
+      "state" : {
+        "revision" : "b358860fe565eb53e98b1f5807eb5939c8124547",
+        "version" : "0.11.0"
       }
-    ]
-  },
-  "version": 1
+    }
+  ],
+  "version" : 2
 }

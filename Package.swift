@@ -1,9 +1,9 @@
-// swift-tools-version:5.5
+// swift-tools-version:5.6
 
 import PackageDescription
 
 let package = Package(
-    name: "ConradEntryReport",
+    name: "conrad-entry-report",
     defaultLocalization: "en",
     platforms: [.macOS(.v11)],
     products: [
@@ -14,7 +14,7 @@ let package = Package(
         )
     ],
     dependencies: [
-        .package(url: "https://github.com/JohnSundell/Plot", .upToNextMajor(from: "0.10.0"))
+        .package(url: "https://github.com/JohnSundell/Plot", from: "0.11.0")
     ],
     targets: [
         // Targets are the basic building blocks of a package. A target can define a module or a test suite.
