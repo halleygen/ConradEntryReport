@@ -29,8 +29,8 @@ public struct Report {
                 .title(title),
                 .meta(.attribute(named: "title", value: title)),
                 .meta(.attribute(named: "author", value: "Conrad Partners")),
-                .meta(.attribute(named: "subject", value: "WSMD Report")),
-                .meta(.attribute(named: "date", value: ISO8601DateFormatter.string(from: Date(), timeZone: .current, formatOptions: [.withDay, .withMonth, .withYear, .withDashSeparatorInDate]))),
+                .meta(.attribute(named: "description", value: "WSMD Report")),
+                .meta(.attribute(named: "dcterms.created", value: ISO8601DateFormatter.string(from: Date(), timeZone: .current, formatOptions: .withInternetDateTime))),
                 .meta(.charset(.utf8)),
                 .style(printOptions.serialised())
             ),
