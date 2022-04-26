@@ -1,6 +1,6 @@
 //
 // ConradEntryReport
-// Copyright © 2021 Jesse Halley. All rights reserved.
+// Copyright © 2022 Jesse Halley. All rights reserved.
 //
 
 @testable import ConradEntryReport
@@ -47,7 +47,7 @@ final class ConradEntryReportTests: XCTestCase {
                 (1, 2)
             }
         }
-        
+
         let str1 = HTML {
             Table(header: "header", footer: "footer", caption: "Single Caption") {
                 "Element"
