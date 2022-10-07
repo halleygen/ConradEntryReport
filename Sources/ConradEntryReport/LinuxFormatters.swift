@@ -9,7 +9,7 @@ import Foundation
     public enum LinuxDateComponentsFormatter {
         public static func localizedString(from dateComponents: DateComponents) -> String? {
             func appendToString(_ string: inout String, value: Int?, symbol: (singular: String, plural: String)) {
-                guard let value = value, value != 0 else { return }
+                guard let value, value != 0 else { return }
 
                 if !string.isEmpty {
                     string += ", "
@@ -45,13 +45,13 @@ import Foundation
             }
         }
 
-        public static func localizedString<T: LosslessStringConvertible>(byJoining values: [T]) -> String {
+        public static func localizedString(byJoining values: [some LosslessStringConvertible]) -> String {
             localizedString(byJoining: values.map(String.init(_:)))
         }
     }
 
     public enum LinuxMeasurementFormatter {
-        public static func localizedString<UnitType: Unit>(from measurement: Measurement<UnitType>, numberFormatter: NumberFormatter? = nil) -> String {
+        public static func localizedString(from measurement: Measurement<some Unit>, numberFormatter: NumberFormatter? = nil) -> String {
             let number = measurement.value as NSNumber
             var str = numberFormatter?.string(from: number) ?? NumberFormatter.localizedString(from: number, number: .decimal)
             str.append(measurement.unit.symbol)

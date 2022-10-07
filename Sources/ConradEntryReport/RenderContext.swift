@@ -32,12 +32,12 @@ public extension Report {
 // MARK: - Number Formatting
 
 public extension Report.RenderContext {
-    func localizedString<T: BinaryInteger>(for value: T) -> String {
+    func localizedString(for value: some BinaryInteger) -> String {
         let number = Int64(exactly: value)! as NSNumber
         return localizedString(for: number, style: .none)
     }
 
-    func localizedString<T: BinaryFloatingPoint>(for value: T) -> String {
+    func localizedString(for value: some BinaryFloatingPoint) -> String {
         let number = Double(exactly: value)! as NSNumber
         return localizedString(for: number, style: .decimal)
     }
@@ -100,7 +100,7 @@ public extension Report.RenderContext {
 // MARK: - Measurement Formatting
 
 public extension Report.RenderContext {
-    func localizedString<UnitType: Unit>(for measurement: Measurement<UnitType>) -> String {
+    func localizedString(for measurement: Measurement<some Unit>) -> String {
         #if os(macOS)
             return measurementFormatter.string(from: measurement)
         #else

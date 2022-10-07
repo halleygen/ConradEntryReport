@@ -29,7 +29,7 @@ public extension TableRowBuilder {
     }
 
     static func buildExpression(_ expression: Columns?) -> [Columns] {
-        if let expression = expression {
+        if let expression {
             return [expression]
         } else {
             return []
@@ -37,7 +37,7 @@ public extension TableRowBuilder {
     }
 
     static func buildOptional(_ component: [Columns]?) -> [Columns] {
-        if let component = component {
+        if let component {
             return component
         } else {
             return []
@@ -59,7 +59,7 @@ public extension TableRowBuilder {
 public enum SingleColumnTableRowBuilder: TableRowBuilder {
     public typealias Columns = TableCell
 
-    public static func buildExpression<T: HTMLTextConvertible>(_ expression: T) -> [Columns] {
+    public static func buildExpression(_ expression: some HTMLTextConvertible) -> [Columns] {
         [TableCell(expression)]
     }
 
@@ -77,7 +77,7 @@ public enum SingleColumnWithHeaderTableRowBuilder: TableRowBuilder {
     public typealias Columns = (TableHeaderCell, ChildColumns)
     public typealias ChildColumns = TableCell
 
-    public static func buildExpression<A: HTMLTextConvertible, B: HTMLTextConvertible>(_ expression: (A, B)) -> [Columns] {
+    public static func buildExpression(_ expression: (some HTMLTextConvertible, some HTMLTextConvertible)) -> [Columns] {
         [(TableHeaderCell(expression.0), TableCell(expression.1))]
     }
 
@@ -97,7 +97,7 @@ public enum SingleColumnWithHeaderTableRowBuilder: TableRowBuilder {
 public enum DoubleColumnTableRowBuilder: TableRowBuilder {
     public typealias Columns = (TableCell, TableCell)
 
-    public static func buildExpression<A: HTMLTextConvertible, B: HTMLTextConvertible>(_ expression: (A, B)) -> [Columns] {
+    public static func buildExpression(_ expression: (some HTMLTextConvertible, some HTMLTextConvertible)) -> [Columns] {
         [(TableCell(expression.0), TableCell(expression.1))]
     }
 
@@ -116,7 +116,7 @@ public enum DoubleColumnWithHeaderTableRowBuilder: TableRowBuilder {
     public typealias Columns = (TableHeaderCell, ChildColumns)
     public typealias ChildColumns = (TableCell, TableCell)
 
-    public static func buildExpression<A: HTMLTextConvertible, B: HTMLTextConvertible, C: HTMLTextConvertible>(_ expression: (A, (B, C))) -> [Columns] {
+    public static func buildExpression(_ expression: (some HTMLTextConvertible, (some HTMLTextConvertible, some HTMLTextConvertible))) -> [Columns] {
         [(TableHeaderCell(expression.0), (TableCell(expression.1.0), TableCell(expression.1.1)))]
     }
 
@@ -137,7 +137,7 @@ public enum DoubleColumnWithHeaderTableRowBuilder: TableRowBuilder {
 public enum TripleColumnTableRowBuilder: TableRowBuilder {
     public typealias Columns = (TableCell, TableCell, TableCell)
 
-    public static func buildExpression<A: HTMLTextConvertible, B: HTMLTextConvertible, C: HTMLTextConvertible>(_ expression: (A, B, C)) -> [Columns] {
+    public static func buildExpression(_ expression: (some HTMLTextConvertible, some HTMLTextConvertible, some HTMLTextConvertible)) -> [Columns] {
         [(TableCell(expression.0), TableCell(expression.1), TableCell(expression.2))]
     }
 
@@ -157,7 +157,7 @@ public enum TripleColumnWithHeaderTableRowBuilder: TableRowBuilder {
     public typealias Columns = (TableHeaderCell, ChildColumns)
     public typealias ChildColumns = (TableCell, TableCell, TableCell)
 
-    public static func buildExpression<A: HTMLTextConvertible, B: HTMLTextConvertible, C: HTMLTextConvertible, D: HTMLTextConvertible>(_ expression: (A, (B, C, D))) -> [Columns] {
+    public static func buildExpression(_ expression: (some HTMLTextConvertible, (some HTMLTextConvertible, some HTMLTextConvertible, some HTMLTextConvertible))) -> [Columns] {
         [(TableHeaderCell(expression.0), (TableCell(expression.1.0), TableCell(expression.1.1), TableCell(expression.1.2)))]
     }
 
@@ -179,7 +179,7 @@ public enum TripleColumnWithHeaderTableRowBuilder: TableRowBuilder {
 public enum QuadrupleColumnTableRowBuilder: TableRowBuilder {
     public typealias Columns = (TableCell, TableCell, TableCell, TableCell)
 
-    public static func buildExpression<A: HTMLTextConvertible, B: HTMLTextConvertible, C: HTMLTextConvertible, D: HTMLTextConvertible>(_ expression: (A, B, C, D)) -> [Columns] {
+    public static func buildExpression(_ expression: (some HTMLTextConvertible, some HTMLTextConvertible, some HTMLTextConvertible, some HTMLTextConvertible)) -> [Columns] {
         [(TableCell(expression.0), TableCell(expression.1), TableCell(expression.2), TableCell(expression.3))]
     }
 
@@ -200,7 +200,7 @@ public enum QuadrupleColumnWithHeaderTableRowBuilder: TableRowBuilder {
     public typealias Columns = (TableHeaderCell, ChildColumns)
     public typealias ChildColumns = (TableCell, TableCell, TableCell, TableCell)
 
-    public static func buildExpression<A: HTMLTextConvertible, B: HTMLTextConvertible, C: HTMLTextConvertible, D: HTMLTextConvertible, E: HTMLTextConvertible>(_ expression: (A, (B, C, D, E))) -> [Columns] {
+    public static func buildExpression(_ expression: (some HTMLTextConvertible, (some HTMLTextConvertible, some HTMLTextConvertible, some HTMLTextConvertible, some HTMLTextConvertible))) -> [Columns] {
         [(TableHeaderCell(expression.0), (TableCell(expression.1.0), TableCell(expression.1.1), TableCell(expression.1.2), TableCell(expression.1.3)))]
     }
 
@@ -223,7 +223,7 @@ public enum QuadrupleColumnWithHeaderTableRowBuilder: TableRowBuilder {
 public enum QuintupleColumnTableRowBuilder: TableRowBuilder {
     public typealias Columns = (TableCell, TableCell, TableCell, TableCell, TableCell)
 
-    public static func buildExpression<A: HTMLTextConvertible, B: HTMLTextConvertible, C: HTMLTextConvertible, D: HTMLTextConvertible, E: HTMLTextConvertible>(_ expression: (A, B, C, D, E)) -> [Columns] {
+    public static func buildExpression(_ expression: (some HTMLTextConvertible, some HTMLTextConvertible, some HTMLTextConvertible, some HTMLTextConvertible, some HTMLTextConvertible)) -> [Columns] {
         [(TableCell(expression.0), TableCell(expression.1), TableCell(expression.2), TableCell(expression.3), TableCell(expression.4))]
     }
 
@@ -245,7 +245,7 @@ public enum QuintupleColumnWithHeaderTableRowBuilder: TableRowBuilder {
     public typealias Columns = (TableHeaderCell, ChildColumns)
     public typealias ChildColumns = (TableCell, TableCell, TableCell, TableCell, TableCell)
 
-    public static func buildExpression<A: HTMLTextConvertible, B: HTMLTextConvertible, C: HTMLTextConvertible, D: HTMLTextConvertible, E: HTMLTextConvertible, F: HTMLTextConvertible>(_ expression: (A, (B, C, D, E, F))) -> [Columns] {
+    public static func buildExpression(_ expression: (some HTMLTextConvertible, (some HTMLTextConvertible, some HTMLTextConvertible, some HTMLTextConvertible, some HTMLTextConvertible, some HTMLTextConvertible))) -> [Columns] {
         [(TableHeaderCell(expression.0), (TableCell(expression.1.0), TableCell(expression.1.1), TableCell(expression.1.2), TableCell(expression.1.3), TableCell(expression.1.4)))]
     }
 

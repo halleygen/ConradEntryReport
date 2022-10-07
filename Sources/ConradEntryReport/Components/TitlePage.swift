@@ -24,9 +24,10 @@ public struct TitlePage: Component {
             H1(title)
 
             for (name, value) in components {
-                if let value = value {
+                if let value {
                     Text("\(name): \(value.htmlString(context: context!))")
                         .bold()
+                        .addLineBreak()
                 }
             }
 
