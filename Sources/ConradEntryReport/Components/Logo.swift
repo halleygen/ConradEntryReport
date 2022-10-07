@@ -36,18 +36,17 @@ public struct Logo: Component, Codable {
 
     @ComponentBuilder
     private func image(for url: URL) -> Component {
-        Image(url: url, description: "logo")
+        Image(url: url.relativePath, description: "logo")
             .style("height: 2.5em; width: 2.5em")
     }
 }
 
 public extension Logo {
-    @_disfavoredOverload
-    init(url: URL, text: String) {
+    init(relativeImageURL url: URL, text: String) {
         self.init(url: url, text: text)
     }
 
-    init(url: URL) {
+    init(relativeImageURL url: URL) {
         self.init(url: url, text: nil)
     }
 
