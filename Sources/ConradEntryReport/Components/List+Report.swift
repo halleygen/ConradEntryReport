@@ -5,30 +5,49 @@
 
 import Plot
 
-public struct OrderedList<Items: Sequence, Content: Component>: Component {
+public struct OrderedList<Items: Collection, Content: Component, Empty: Component>: Component {
     public var items: Items
     @ComponentBuilder public var content: (Items.Element) -> Content
+    public var emptyComponent: Empty
 
-    public init(_ items: Items, @ComponentBuilder content: @escaping (Items.Element) -> Content) {
+    public init(_ items: Items, @ComponentBuilder content: @escaping (Items.Element) -> Content, @ComponentBuilder emptyComponent: () -> Empty) {
         self.items = items
         self.content = content
     }
 
-    public var body: Component {
-        List(items, content: content).listStyle(.ordered)
+    public init(_ items: Items, emptyText: String, @ComponentBuilder content: @escaping (Items.Element) -> Content) where Empty == ComponentGroup {
+        self.init(items, content: content, emptyComponent: { Paragraph(emptyText) })
+    }
+
+    @ComponentBuilder public var body: Component {
+        if items.isEmpty {
+            emptyComponent
+        } else {
+            List(items, content: content).listStyle(.ordered)
+        }
     }
 }
 
-public struct UnorderedList<Items: Sequence, Content: Component>: Component {
+public struct UnorderedList<Items: Collection, Content: Component, Empty: Component>: Component {
     public var items: Items
     @ComponentBuilder public var content: (Items.Element) -> Content
+    public var emptyComponent: Empty
 
-    public init(_ items: Items, @ComponentBuilder content: @escaping (Items.Element) -> Content) {
+    public init(_ items: Items, @ComponentBuilder content: @escaping (Items.Element) -> Content, @ComponentBuilder emptyComponent: () -> Empty) {
         self.items = items
         self.content = content
+        self.emptyComponent = emptyComponent()
     }
 
-    public var body: Component {
-        List(items, content: content).listStyle(.unordered)
+    public init(_ items: Items, emptyText: String, @ComponentBuilder content: @escaping (Items.Element) -> Content) where Empty == ComponentGroup {
+        self.init(items, content: content, emptyComponent: { Paragraph(emptyText) })
+    }
+
+    @ComponentBuilder public var body: Component {
+        if items.isEmpty {
+            emptyComponent
+        } else {
+            List(items, content: content).listStyle(.unordered)
+        }
     }
 }
